@@ -3209,13 +3209,11 @@ namedLit.TITLES_keyedToAuthor = {}
 if not namedLit.TITLES_weighted then
 	namedLit.TITLES_weighted = {}
 
-	--[[DEBUG]] local debugText = "\nDEBUG: namedLit:"
-	--[[DEBUG]] local totalTitles = 0
+	--[DEBUG]] local debugText, totalTitles = "\nDEBUG: namedLit:", 0
 
 	for year,titles in pairs(namedLit.TITLES) do
 		namedLit.TITLES_weighted[year] = {}
-		--[[DEBUG]] debugText = debugText.."\n"..year.."  n of titles:"..(#titles/2)
-		--[[DEBUG]] totalTitles = totalTitles+(#titles/2)
+		--[DEBUG]] debugText, totalTitles = debugText.."\n"..year.."  n of titles:"..(#titles/2), totalTitles+(#titles/2)
 		for i=1, #titles, 2 do
 			local title = titles[i]
 			namedLit.TITLES_keyedToAuthor[title] = titles[i+1]
@@ -3227,5 +3225,5 @@ if not namedLit.TITLES_weighted then
 			--[DEBUG]] print("---- "..title.." - "..namedLit.TITLES_keyedToAuthor[title].." -weight:"..weight)
 		end
 	end
-	--[[DEBUG]] print(debugText.."\nTOTAL: "..totalTitles)
+	--[DEBUG]] print(debugText.."\nTOTAL: "..totalTitles)
 end

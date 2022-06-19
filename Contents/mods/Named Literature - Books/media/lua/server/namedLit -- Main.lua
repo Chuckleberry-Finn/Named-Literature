@@ -68,7 +68,7 @@ function namedLiteratureOnFillContainer(a, b, ItemContainer)
         local item = items:get(iteration)
         if item and item:getFullType()=="Base.Book" then
             namedLit.applyTitle(item)
-            print("--n:"..item:getName().."  dn:"..item:getDisplayName().."  t:"..item:getType().."  ft:"..item:getFullType().."  c:"..item:getCategory())
+            --[DEBUG]] print("--n:"..item:getName().."  dn:"..item:getDisplayName().."  t:"..item:getType().."  ft:"..item:getFullType().."  c:"..item:getCategory())
         end
     end
 end
