@@ -58,31 +58,6 @@ function namedLit.applyTitle(book)
 end
 
 
-ISToolTipInv_setItem = ISToolTipInv.setItem
-function ISToolTipInv:setItem(book)
-    ISToolTipInv_setItem(self, book)
-    if book:getFullType() == "Base.Book" then
-
-        local bookNameLitInfo = book:getModData()["namedLit"]
-        if not bookNameLitInfo then return end
-
-        local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
-        local tooltipAddition = ""
-
-        if author then
-            tooltipAddition = tooltipAddition.."\nBy "..author
-        end
-        if year then
-            tooltipAddition = tooltipAddition.."\nPublished in "..year.."."
-        end
-
-        if tooltipAddition ~= "" then
-            book:setTooltip(tooltipAddition)
-        end
-    end
-end
-
-
 ---@param ItemContainer ItemContainer
 function namedLiteratureOnFillContainer(a, b, ItemContainer)
     local items = ItemContainer:getItems()
