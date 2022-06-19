@@ -76,7 +76,7 @@ function ISInventoryPane:refreshContainer()
             add = false;
         end
         if add then
-            local itemName = item:getScriptItem():getName()
+            local itemName = item:getScriptItem():getDisplayName()
             if item:IsFood() and item:getHerbalistType() and item:getHerbalistType() ~= "" then
                 if playerObj:isRecipeKnown("Herbalist") then
                     if item:getHerbalistType() == "Berry" then
@@ -471,6 +471,8 @@ function ISInventoryPane:renderdetails(doDragged)
 
                 --~ 				local redDetail = false;
                 local itemName = item:getName();
+                local itemNameForStacks = item:getScriptItem():getDisplayName()
+
                 if count == 1 then
 
                     -- if we're dragging something and want to put it in a container wich is full
@@ -478,13 +480,13 @@ function ISInventoryPane:renderdetails(doDragged)
                         local red = false;
                         if red then
                             if v.count > 2 then
-                                self:drawText(item:getScriptItem():getName().." ("..(v.count-1)..")", self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.0, 0.0, 1.0, self.font);
+                                self:drawText(itemNameForStacks.." ("..(v.count-1)..")", self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.0, 0.0, 1.0, self.font);
                             else
                                 self:drawText(itemName, self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.0, 0.0, 1.0, self.font);
                             end
                         else
                             if v.count > 2 then
-                                self:drawText(item:getScriptItem():getName().." ("..(v.count-1)..")", self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.7, 0.7, 1.0, self.font);
+                                self:drawText(itemNameForStacks.." ("..(v.count-1)..")", self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.7, 0.7, 1.0, self.font);
                             else
                                 self:drawText(itemName, self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.7, 0.7, 1.0, self.font);
                             end
@@ -497,7 +499,7 @@ function ISInventoryPane:renderdetails(doDragged)
                         if clipX < clipX2 and clipY < clipY2 then
                             self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
                             if v.count > 2 then
-                                self:drawText(item:getScriptItem():getName().." ("..(v.count-1)..")", self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.7, 0.7, 1.0, self.font);
+                                self:drawText(itemNameForStacks.." ("..(v.count-1)..")", self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.7, 0.7, 1.0, self.font);
                             else
                                 self:drawText(itemName, self.column2+8+xoff, (y*self.itemHgt)+self.headerHgt+textDY+yoff, 0.7, 0.7, 0.7, 1.0, self.font);
                             end
