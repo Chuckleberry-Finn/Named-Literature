@@ -73,6 +73,3 @@ function namedLiteratureOnFillContainer(a, b, ItemContainer)
     end
 end
 Events.OnFillContainer.Add(namedLiteratureOnFillContainer)
---LuaEventManager.triggerEvent("OnFillContainer", var11, var0.getType(), var0)
-
---book:setTooltip("")
