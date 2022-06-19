@@ -1,3 +1,5 @@
+Events.OnGameBoot.Add(print("Named Literature: ver:0.0.1-JUN19"))
+
 namedLit = namedLit or {}
 
 function namedLit.getTitleAuthor()
