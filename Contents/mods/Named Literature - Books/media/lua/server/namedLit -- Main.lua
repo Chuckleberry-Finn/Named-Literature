@@ -55,15 +55,27 @@ end
 
 
 ---@param ItemContainer ItemContainer
-function namedLiteratureOnFillContainer(a, b, ItemContainer)
+function namedLiteratureContainerScan(ItemContainer)
     local items = ItemContainer:getItems()
     for iteration=0, items:size()-1 do
         ---@type InventoryItem
         local item = items:get(iteration)
-        if item and item:getFullType()=="Base.Book" then
+        if item and item:getFullType()=="Base.Book" and (not setBooks[item]) then
             namedLit.applyTitle(item)
             --[DEBUG]] print("--n:"..item:getName().."  dn:"..item:getDisplayName().."  t:"..item:getType().."  ft:"..item:getFullType().."  c:"..item:getCategory())
         end
     end
 end
+
+---@param ItemContainer ItemContainer
+function namedLiteratureOnFillContainer(a, b, ItemContainer)
+    namedLiteratureContainerScan(ItemContainer)
+end
+
+---@param IsoObject IsoObject
+function namedLiteratureOnContainerUpdate(IsoObject)
+    namedLiteratureContainerScan(IsoObject:getContainer())
+end
+
 Events.OnFillContainer.Add(namedLiteratureOnFillContainer)
+Events.OnContainerUpdate.Add(namedLiteratureOnContainerUpdate)
