@@ -3204,8 +3204,49 @@ namedLit.TITLES = {
 
 }
 
+local function stringToRGB(str)
+	if string.len(str)<6 then
+		local stretch = 6-string.len(str)
+		for i=1, stretch do
+			str = str..str
+			if string.len(str)>=6 then
+				break
+			end
+		end
+	end
+
+	local stringy = (str:gsub('.', function (c) return string.format('%02X', string.byte(c)) end))
+	stringy = (stringy):sub(-6)
+
+	print("DEBUG: namedLit: stringy::"..stringy)
+
+	local r = stringy:sub(1,2)
+	local rNum = tonumber(r)
+	if not rNum then
+		rNum = string.byte(r)
+	end
+
+	local g = stringy:sub(3,4)
+	local gNum = tonumber(g)
+	if not gNum then
+		gNum = string.byte(g)
+	end
+
+	local b = stringy:sub(5,6)
+	local bNum = tonumber(b)
+	if not bNum then
+		bNum = string.byte(b)
+	end
+
+	print("DEBUG: namedLit: rgb::"..r..","..g..","..b)
+
+	return rNum/255, gNum/255, bNum/255
+end
+
+
 namedLit.TITLES_weighted = false
 namedLit.TITLES_keyedToAuthor = {}
+namedLit.TITLES_color = {}
 if not namedLit.TITLES_weighted then
 	namedLit.TITLES_weighted = {}
 
@@ -3217,6 +3258,10 @@ if not namedLit.TITLES_weighted then
 		for i=1, #titles, 2 do
 			local title = titles[i]
 			namedLit.TITLES_keyedToAuthor[title] = titles[i+1]
+			local titleR, titleG, titleB = stringToRGB(title)
+			if titleR and titleG and titleB then
+				namedLit.TITLES_color[title] = {titleR,titleG,titleB}
+			end
 			local weight = 0
 			for ii=1, (#titles-(i-1)) do
 				weight = weight+1

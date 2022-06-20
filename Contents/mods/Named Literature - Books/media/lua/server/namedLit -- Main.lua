@@ -25,38 +25,32 @@ end
 
 --[DEBUG]] for i=0, 10 do local t, a, y = namedLit.getTitleAuthor() print("-DEBUG: namedLit:  t:"..t.."  a:"..a.."  y:"..y) end
 
+local setBooks = {}
 ---@param book HandWeapon | InventoryItem | IsoObject
 function namedLit.applyTitle(book)
     if not book then return end
 
+    local title, author, year
     local bookNameLitInfo = book:getModData()["namedLit"]
+    if not bookNameLitInfo then
+        book:getModData()["namedLit"] = {}
+        bookNameLitInfo = book:getModData()["namedLit"]
+
+        title, author, year = namedLit.getTitleAuthor()
+        if title then bookNameLitInfo["title"] = title end
+        if author then bookNameLitInfo["author"] =  author end
+        if year then bookNameLitInfo["year"] =  year end
+    end
 
     if bookNameLitInfo then
-        print("ERR: namedLit: bookNameLitInfo doesn't need to be created")
-        return
+        title = bookNameLitInfo["title"]
+        book:setName(title)
+        local colorForTitle = namedLit.TITLES_color[title]
+        if colorForTitle then
+            book:setColor(Color.new(colorForTitle[1],colorForTitle[2],colorForTitle[3],1))
+        end
     end
-
-    book:getModData()["namedLit"] = {}
-    bookNameLitInfo = book:getModData()["namedLit"]
-
-    --if title already found then return
-    if bookNameLitInfo["title"] then return end
-
-    --store title and author
-    local title, author, year = namedLit.getTitleAuthor()
-
-    if title then
-        bookNameLitInfo["title"] = title
-    end
-    if author then
-        bookNameLitInfo["author"] =  author
-    end
-    if year then
-        bookNameLitInfo["year"] =  year
-    end
-
-    --set item name to title
-    book:setName(bookNameLitInfo["title"])
+    setBooks[book] = true
 end
 
 
