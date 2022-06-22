@@ -1,23 +1,22 @@
-ISToolTipInv_setItem = ISToolTipInv.setItem
+local ISToolTipInv_setItem = ISToolTipInv.setItem
 function ISToolTipInv:setItem(book)
     ISToolTipInv_setItem(self, book)
     if book:getFullType() == "Base.Book" then
-
         local bookNameLitInfo = book:getModData()["namedLit"]
-        if not bookNameLitInfo then return end
+        if bookNameLitInfo then
+            local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
+            local tooltipAddition = ""
 
-        local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
-        local tooltipAddition = ""
+            if author then
+                tooltipAddition = tooltipAddition.."\nBy "..author
+            end
+            if year then
+                tooltipAddition = tooltipAddition.."\nPublished in "..year.."."
+            end
 
-        if author then
-            tooltipAddition = tooltipAddition.."\nBy "..author
-        end
-        if year then
-            tooltipAddition = tooltipAddition.."\nPublished in "..year.."."
-        end
-
-        if tooltipAddition ~= "" then
-            book:setTooltip(tooltipAddition)
+            if tooltipAddition ~= "" then
+                book:setTooltip(tooltipAddition)
+            end
         end
     end
 end
