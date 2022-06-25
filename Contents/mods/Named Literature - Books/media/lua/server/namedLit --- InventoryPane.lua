@@ -1,7 +1,7 @@
 local ISToolTipInv_setItem = ISToolTipInv.setItem
 function ISToolTipInv:setItem(book)
     ISToolTipInv_setItem(self, book)
-    if book:getFullType() == "Base.Book" then
+    if namedLitStackableTypes[book:getFullType()] then
         local bookNameLitInfo = book:getModData()["namedLit"]
         if bookNameLitInfo then
             local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
@@ -75,7 +75,12 @@ function ISInventoryPane:refreshContainer()
             add = false;
         end
         if add then
-            local itemName = item:getScriptItem():getDisplayName()
+            local itemName = item:getName()
+
+            if namedLitStackableTypes[item:getFullType()] then
+                itemName = item:getScriptItem():getDisplayName()
+            end
+
             if item:IsFood() and item:getHerbalistType() and item:getHerbalistType() ~= "" then
                 if playerObj:isRecipeKnown("Herbalist") then
                     if item:getHerbalistType() == "Berry" then

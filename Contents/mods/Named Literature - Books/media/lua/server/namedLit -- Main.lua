@@ -1,5 +1,7 @@
 Events.OnGameBoot.Add(print("Named Literature: ver:0.0.2-JUN22"))
 
+namedLitStackableTypes = {["Base.Book"]=true}
+
 namedLit = namedLit or {}
 
 function namedLit.getTitleAuthor()
@@ -60,7 +62,8 @@ function namedLiteratureContainerScan(ItemContainer)
     for iteration=0, items:size()-1 do
         ---@type InventoryItem
         local item = items:get(iteration)
-        if item and item:getFullType()=="Base.Book" and (not setBooks[item]) then
+
+        if item and namedLitStackableTypes[item:getFullType()] and (not setBooks[item]) then
             namedLit.applyTitle(item)
             --[DEBUG]] print("--n:"..item:getName().."  dn:"..item:getDisplayName().."  t:"..item:getType().."  ft:"..item:getFullType().."  c:"..item:getCategory())
         end
@@ -78,4 +81,4 @@ function namedLiteratureOnContainerUpdate(IsoObject)
 end
 
 Events.OnFillContainer.Add(namedLiteratureOnFillContainer)
-Events.OnContainerUpdate.Add(namedLiteratureOnContainerUpdate)
+Events.OnContainerUpdate.Add(namedLiteratureOnContainerUpdate)Events.OnRefreshInventoryWindowContainers.Add(namedLiteratureOnRefreshInventoryWindowContainers)
