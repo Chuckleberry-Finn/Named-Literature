@@ -78,6 +78,9 @@ function ISInventoryPane:refreshContainer()
             local itemName = item:getName()
 
             if namedLitStackableTypes[item:getFullType()] then
+                if not namedLit.setBooks[item] then
+                    namedLit.applyTitle(item)
+                end
                 itemName = item:getScriptItem():getDisplayName()
             end
 
@@ -472,10 +475,12 @@ function ISInventoryPane:renderdetails(doDragged)
                 -- print("trace:i");
 
                 local textDY = (self.itemHgt - self.fontHgt) / 2
-
                 --~ 				local redDetail = false;
-                local itemName = item:getName();
-                local itemNameForStacks = item:getScriptItem():getDisplayName()
+                local itemName = item:getName()
+                local itemNameForStacks = itemName
+                if namedLitStackableTypes[item:getFullType()] then
+                    itemNameForStacks = item:getScriptItem():getDisplayName()
+                end
 
                 if count == 1 then
 

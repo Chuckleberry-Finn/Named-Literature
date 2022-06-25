@@ -27,7 +27,7 @@ end
 
 --[DEBUG]] for i=0, 10 do local t, a, y = namedLit.getTitleAuthor() print("-DEBUG: namedLit:  t:"..t.."  a:"..a.."  y:"..y) end
 
-local setBooks = {}
+namedLit.setBooks = {}
 ---@param book HandWeapon | InventoryItem | IsoObject
 function namedLit.applyTitle(book)
     if not book then return end
@@ -52,7 +52,7 @@ function namedLit.applyTitle(book)
             book:setColor(Color.new(colorForTitle[1],colorForTitle[2],colorForTitle[3],1))
         end
     end
-    setBooks[book] = true
+    namedLit.setBooks[book] = true
 end
 
 
@@ -64,7 +64,7 @@ function namedLiteratureContainerScan(ItemContainer)
         ---@type InventoryItem
         local item = items:get(iteration)
 
-        if item and namedLitStackableTypes[item:getFullType()] and (not setBooks[item]) then
+        if item and namedLitStackableTypes[item:getFullType()] and (not namedLit.setBooks[item]) then
             namedLit.applyTitle(item)
             --[DEBUG]] print("--n:"..item:getName().."  dn:"..item:getDisplayName().."  t:"..item:getType().."  ft:"..item:getFullType().."  c:"..item:getCategory())
         end
