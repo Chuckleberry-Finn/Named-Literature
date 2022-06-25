@@ -58,6 +58,7 @@ end
 
 ---@param ItemContainer ItemContainer
 function namedLiteratureContainerScan(ItemContainer)
+    if not ItemContainer then return end
     local items = ItemContainer:getItems()
     for iteration=0, items:size()-1 do
         ---@type InventoryItem
@@ -74,11 +75,19 @@ end
 function namedLiteratureOnFillContainer(a, b, ItemContainer)
     namedLiteratureContainerScan(ItemContainer)
 end
+Events.OnFillContainer.Add(namedLiteratureOnFillContainer)
 
----@param IsoObject IsoObject
-function namedLiteratureOnContainerUpdate(IsoObject)
-    namedLiteratureContainerScan(IsoObject:getContainer())
+--[[ --WIP - make it so previously loaded books are caught and renamed
+function namedLiteratureOnRefreshInventoryWindowContainers(ISInventoryPage, id)
+    if not ISInventoryPage or id~="begin" or (not ISInventoryPage.inventory) then return end
+    local parent = ISInventoryPage.inventory:getParent()
+    if parent and instanceof(parent, "ItemContainer") then
+        namedLiteratureContainerScan(parent)
+    end
 end
 
-Events.OnFillContainer.Add(namedLiteratureOnFillContainer)
-Events.OnContainerUpdate.Add(namedLiteratureOnContainerUpdate)Events.OnRefreshInventoryWindowContainers.Add(namedLiteratureOnRefreshInventoryWindowContainers)
+function namedLiteratureLoadGridsquare(gridSquare)
+    --getSpecialObjects
+end
+Events.OnRefreshInventoryWindowContainers.Add(namedLiteratureOnRefreshInventoryWindowContainers)
+--]]
