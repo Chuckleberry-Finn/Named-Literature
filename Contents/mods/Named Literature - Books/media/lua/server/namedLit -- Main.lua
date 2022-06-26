@@ -1,7 +1,6 @@
 Events.OnGameBoot.Add(print("Named Literature: ver:0.0.2-JUN22"))
 
 namedLitStackableTypes = {["Base.Book"]=true}
-
 namedLit = namedLit or {}
 
 function namedLit.getTitleAuthor()
@@ -47,10 +46,6 @@ function namedLit.applyTitle(book)
     if bookNameLitInfo then
         title = bookNameLitInfo["title"]
         book:setName(title)
-        local colorForTitle = namedLit.TITLES_color[title]
-        if colorForTitle then
-            book:setColor(Color.new(colorForTitle[1],colorForTitle[2],colorForTitle[3],1))
-        end
     end
     namedLit.setBooks[book] = true
 end
@@ -76,18 +71,3 @@ function namedLiteratureOnFillContainer(a, b, ItemContainer)
     namedLiteratureContainerScan(ItemContainer)
 end
 Events.OnFillContainer.Add(namedLiteratureOnFillContainer)
-
---[[ --WIP - make it so previously loaded books are caught and renamed
-function namedLiteratureOnRefreshInventoryWindowContainers(ISInventoryPage, id)
-    if not ISInventoryPage or id~="begin" or (not ISInventoryPage.inventory) then return end
-    local parent = ISInventoryPage.inventory:getParent()
-    if parent and instanceof(parent, "ItemContainer") then
-        namedLiteratureContainerScan(parent)
-    end
-end
-
-function namedLiteratureLoadGridsquare(gridSquare)
-    --getSpecialObjects
-end
-Events.OnRefreshInventoryWindowContainers.Add(namedLiteratureOnRefreshInventoryWindowContainers)
---]]
