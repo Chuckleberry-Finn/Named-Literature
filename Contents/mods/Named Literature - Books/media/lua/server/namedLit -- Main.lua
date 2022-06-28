@@ -46,6 +46,7 @@ function namedLit.applyTitle(book)
     if bookNameLitInfo then
         title = bookNameLitInfo["title"]
         book:setName(title)
+        namedLit.applyTexture(book, title)
     end
     namedLit.setBooks[book] = true
 end

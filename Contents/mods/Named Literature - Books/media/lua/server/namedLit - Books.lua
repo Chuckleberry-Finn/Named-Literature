@@ -3205,8 +3205,38 @@ namedLit.TITLES = {
 }
 
 
+function namedLit.stringToIconID(str)
+	if string.len(str)<6 then
+		local stretch = 6-string.len(str)
+		for i=1, stretch do
+			str = str..str
+			if string.len(str)>=6 then
+				break
+			end
+		end
+	end
+
+	local stringy = (str:gsub('.', function (c) return string.format('%02X', string.byte(c)) end))
+	stringy = stringy:gsub("%D+", "")
+	stringy = stringy:gsub('0', '')
+	--only 1-9, no alpha no 0
+
+	local firstDigitEven = (stringy:sub(1,1) % 2 == 0)
+	local secondDigitEven = (stringy:sub(2,2) % 2 == 0)
+
+	--get last digit
+	stringy = tonumber(stringy:sub(-1))
+
+	if firstDigitEven then stringy = stringy+9 end
+	if secondDigitEven then stringy = stringy+9 end
+
+	return stringy
+end
+
+
 namedLit.TITLES_weighted = false
 namedLit.TITLES_keyedToAuthor = {}
+namedLit.TITLES_iconIDs = {}
 
 if not namedLit.TITLES_weighted then
 	namedLit.TITLES_weighted = {}
@@ -3219,6 +3249,7 @@ if not namedLit.TITLES_weighted then
 		for i=1, #titles, 2 do
 			local title = titles[i]
 			namedLit.TITLES_keyedToAuthor[title] = titles[i+1]
+			namedLit.TITLES_iconIDs[title] = namedLit.stringToIconID(title)
 
 			local weight = 0
 			for ii=1, (#titles-(i-1)) do
@@ -3229,4 +3260,25 @@ if not namedLit.TITLES_weighted then
 		end
 	end
 	--[DEBUG]] print(debugText.."\nTOTAL: "..totalTitles)
+end
+
+---@param book IsoObject|InventoryItem|Literature
+function namedLit.applyTexture(book, title)
+
+	--[[DEBUG]] print("DEBUG: namedLit: "..title)
+
+	local titleTextureID = namedLit.TITLES_iconIDs[title]
+	if titleTextureID then
+
+		--[[DEBUG]] print("-- titleTextureID:"..titleTextureID)
+		local itemTexture = getTexture("media/textures/item/namedLitBook"..titleTextureID..".png")
+		local modelTexture = getTexture("media/textures/modelTexture/namedLitBook"..titleTextureID..".png")
+
+		if itemTexture then
+			--[[DEBUG]] print("-- itemTexture:"..tostring(itemTexture))
+			book:setTexture(itemTexture)
+			book:setWorldTexture(modelTexture)
+		end
+	end
+
 end
