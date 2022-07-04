@@ -1,0 +1,1 @@
+Events.OnGameBoot.Add(print("Named Literature: ver:0.4-JUL4"))
