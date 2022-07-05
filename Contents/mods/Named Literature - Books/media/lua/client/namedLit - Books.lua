@@ -3265,13 +3265,13 @@ end
 
 ---@param book IsoObject|InventoryItem|Literature
 function namedLit.applyTexture(book, title)
-	--[[DEBUG]] print("DEBUG: namedLit: "..title)
+	--[DEBUG]] print("DEBUG: namedLit: "..title)
 	local titleTextureID = namedLit.TITLES_iconIDs[title]
 	if titleTextureID then
-		--[[DEBUG]] print("-- titleTextureID:"..titleTextureID)
+		--[DEBUG]] print("-- titleTextureID:"..titleTextureID)
 		local itemTexture = getTexture("media/textures/item/namedLitBook"..titleTextureID..".png")
 		if itemTexture then
-			--[[DEBUG]] print("-- itemTexture:"..tostring(itemTexture))
+			--[DEBUG]] print("-- itemTexture:"..tostring(itemTexture))
 			book:setTexture(itemTexture)
 		end
 	end
