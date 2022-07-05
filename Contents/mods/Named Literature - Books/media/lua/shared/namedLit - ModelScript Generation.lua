@@ -17,5 +17,6 @@ local function modifyBookScript()
     bookScript:setStressChange(0)
     bookScript:setBoredomChange(0)
     bookScript:setDisappearOnUse(false)
+    bookScript:setReplaceOnUse(nil)
 end
 Events.OnGameBoot.Add(modifyBookScript)
