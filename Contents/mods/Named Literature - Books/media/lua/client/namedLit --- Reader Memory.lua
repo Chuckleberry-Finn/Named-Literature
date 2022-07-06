@@ -3,15 +3,18 @@ require "namedLit - Books"
 namedLit.readerMemory = {}
 ---How many in-game 10 minute intervals to forget
 namedLit.readerMemory.timeToForget = 26280 --6 months
-
+namedLit.readerMemory.maxTimesReadable = 3
 
 function namedLit.readerMemory.statsImpact(title,player)
     if not title or not player then return end
     local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
     local currentTimeStampsLen = #specificBook.timesStampsWhenRead
-    local UnhappyChange = math.floor(namedLit.bookStats.UnhappyChange/(currentTimeStampsLen+1))
-    local StressChange = math.floor(namedLit.bookStats.StressChange/(currentTimeStampsLen+1))
-    local BoredomChange = math.floor(namedLit.bookStats.BoredomChange/(currentTimeStampsLen+1))
+
+    local divisor = math.min(namedLit.readerMemory.maxTimesReadable,(2^currentTimeStampsLen)+1)
+
+    local UnhappyChange = math.floor(namedLit.bookStats.UnhappyChange/divisor)
+    local StressChange = math.floor(namedLit.bookStats.StressChange/divisor)
+    local BoredomChange = math.floor(namedLit.bookStats.BoredomChange/divisor)
 
     return UnhappyChange, StressChange, BoredomChange
 end
@@ -73,7 +76,7 @@ function namedLit.readerMemory.addReadTime(title,player)
     specificBook.totalTimesRead = specificBook.totalTimesRead or 0
     specificBook.totalTimesRead = specificBook.totalTimesRead+1
 
-    if #specificBookTSWR > 10 then
+    if #specificBookTSWR > namedLit.readerMemory.maxTimesReadable then
         table.remove(specificBookTSWR, 1)
     end
 end
