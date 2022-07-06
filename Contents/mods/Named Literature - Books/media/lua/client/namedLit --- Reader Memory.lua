@@ -8,9 +8,9 @@ namedLit.readerMemory.maxTimesReadable = 3
 function namedLit.readerMemory.statsImpact(title,player)
     if not title or not player then return end
     local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
-    local currentTimeStampsLen = #specificBook.timesStampsWhenRead
+    local currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable, #specificBook.timesStampsWhenRead)
 
-    local divisor = math.min(namedLit.readerMemory.maxTimesReadable,(2^currentTimeStampsLen)+1)
+    local divisor = (2^currentTimeStampsLen)+currentTimeStampsLen
 
     local UnhappyChange = math.floor(namedLit.bookStats.UnhappyChange/divisor)
     local StressChange = math.floor(namedLit.bookStats.StressChange/divisor)
