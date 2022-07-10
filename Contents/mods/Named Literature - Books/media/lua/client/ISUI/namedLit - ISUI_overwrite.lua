@@ -3,6 +3,14 @@ require "ISUI/ISInventoryPane"
 require "namedLit -- Main"
 require "namedLit --- Reader Memory"
 
+local activeMods = {}
+local activeModIDs = getActivatedMods()
+for i=1,activeModIDs:size() do
+    local modID = activeModIDs:get(i-1)
+    activeMods[modID] = true
+end
+
+
 local ISToolTipInv_setItem = ISToolTipInv.setItem
 function ISToolTipInv:setItem(book)
     ISToolTipInv_setItem(self, book)
@@ -208,6 +216,32 @@ function ISInventoryPane:refreshContainer()
     -- Update the buttons
     if self:isMouseOver() then
         self:onMouseMove(0, 0)
+    end
+end
+
+
+if activeMods["Worse Searching"] then
+    local old_searched_ISInventoryPane_refreshContainer = ISInventoryPane.refreshContainer
+
+    function ISInventoryPane:refreshContainer()
+        local searched = nil
+        local object = self.inventory:getVehiclePart() or self.inventory:getParent() or self.inventory:getContainingItem()
+        local mData = nil
+        if object and object:getModData() then
+            mData = object:getModData()
+            if instanceof(self.inventory:getParent(), "IsoPlayer") then mData.searched = true end
+            searched = mData.searched
+        end
+        if self.inventory:getType() == "floor" then
+            searched = true
+        end
+
+        self.itemslist = {}
+        self.itemindex = {}
+
+        if searched then
+            old_searched_ISInventoryPane_refreshContainer(self)
+        end
     end
 end
 
