@@ -35,7 +35,7 @@ function ISToolTipInv:setItem(book)
                 if totalTimesRead > 1 then tooltipAddition = tooltipAddition.."s." else tooltipAddition = tooltipAddition.."." end
             end
 
-            local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(title,player)
+            local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(book,title,player)
             if BoredomChange or StressChange or UnhappyChange then tooltipAddition = tooltipAddition.."\n" end
 
             if BoredomChange ~= 0 then
@@ -114,7 +114,7 @@ function ISInventoryPane:refreshContainer()
             local itemName = item:getName()
 
             if namedLit.StackableTypes[item:getFullType()] then
-                if not namedLit.setBooks[item] then
+                if not namedLit.setLiterature[item] then
                     namedLit.applyTitle(item)
                 end
                 itemName = item:getScriptItem():getDisplayName()

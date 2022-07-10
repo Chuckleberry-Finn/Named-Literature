@@ -1,4 +1,4 @@
-namedLit = {}
+require "namedLit -- Main"
 
 namedLit.YEARS = {
 	["1993"]=50,["1992"]=45,["1991"]=40,["1990"]=35,
@@ -25,7 +25,7 @@ if not namedLit.YEARS_weighted then
 	end
 end
 
-namedLit.TITLES = {
+namedLit.BOOKS = {
 
 	["1993"] = {
 		"The Giver (The Giver, #1)", "Lois Lowry",
@@ -3204,75 +3204,71 @@ namedLit.TITLES = {
 
 }
 
+namedLit.litStats.Book = {}
+namedLit.litStats.Book.UnhappyChange = -40
+namedLit.litStats.Book.StressChange = -40
+namedLit.litStats.Book.BoredomChange = -50
 
-function namedLit.stringToIconID(str)
-	if string.len(str)<6 then
-		local stretch = 6-string.len(str)
-		for i=1, stretch do
-			str = str..str
-			if string.len(str)>=6 then
-				break
-			end
-		end
-	end
+namedLit.BOOKS_weighted = false
+namedLit.BOOKS_keyedToAuthor = {}
+namedLit.BOOKS_iconIDs = {}
 
-	local stringy = (str:gsub('.', function (c) return string.format('%02X', string.byte(c)) end))
-	stringy = stringy:gsub("%D+", "")
-	stringy = stringy:gsub('0', '')
-	--only 1-9, no alpha no 0
-
-	local firstDigitEven = (stringy:sub(1,1) % 2 == 0)
-	local secondDigitEven = (stringy:sub(2,2) % 2 == 0)
-
-	--get last digit
-	stringy = tonumber(stringy:sub(-1))
-
-	if firstDigitEven then stringy = stringy+9 end
-	if secondDigitEven then stringy = stringy+9 end
-
-	return stringy
-end
-
-
-namedLit.TITLES_weighted = false
-namedLit.TITLES_keyedToAuthor = {}
-namedLit.TITLES_iconIDs = {}
-
-if not namedLit.TITLES_weighted then
-	namedLit.TITLES_weighted = {}
+if not namedLit.BOOKS_weighted then
+	namedLit.BOOKS_weighted = {}
 
 	--[DEBUG]] local debugText, totalTitles = "\nDEBUG: namedLit:", 0
 
-	for year,titles in pairs(namedLit.TITLES) do
-		namedLit.TITLES_weighted[year] = {}
+	for year,titles in pairs(namedLit.BOOKS) do
+		namedLit.BOOKS_weighted[year] = {}
 		--[DEBUG]] debugText, totalTitles = debugText.."\n"..year.."  n of titles:"..(#titles/2), totalTitles+(#titles/2)
 		for i=1, #titles, 2 do
 			local title = titles[i]
-			namedLit.TITLES_keyedToAuthor[title] = titles[i+1]
-			namedLit.TITLES_iconIDs[title] = namedLit.stringToIconID(title)
+			namedLit.BOOKS_keyedToAuthor[title] = titles[i+1]
+			namedLit.BOOKS_iconIDs[title] = namedLit.stringToIconID(title, 2)
 
 			local weight = 0
 			for ii=1, (#titles-(i-1)) do
 				weight = weight+1
-				table.insert(namedLit.TITLES_weighted[year],title)
+				table.insert(namedLit.BOOKS_weighted[year],title)
 			end
-			--[DEBUG]] print("---- "..title.." - "..namedLit.TITLES_keyedToAuthor[title].." -weight:"..weight)
+			--[DEBUG]] print("---- "..title.." - "..namedLit.BOOKS_keyedToAuthor[title].." -weight:"..weight.." ColorID:"..namedLit.BOOKS_iconIDs[title])
 		end
 	end
 	--[DEBUG]] print(debugText.."\nTOTAL: "..totalTitles)
 end
 
+function namedLit.getLitInfoBook()
+	local title
+	local author
+	local year
 
----@param book IsoObject|InventoryItem|Literature
-function namedLit.applyTexture(book, title)
+	--namedLit.YEARS_weighted not set properly
+	if type(namedLit.YEARS_weighted) ~= "table" then
+		print("ERR: namedLit: namedLit.YEARS_weighted not initialized")
+		return
+	end
+
+	local randomYearFromWeighted = namedLit.YEARS_weighted[ZombRand(#namedLit.YEARS_weighted)+1]
+	local titlesToChooseFrom = namedLit.BOOKS_weighted[randomYearFromWeighted]
+
+	title = titlesToChooseFrom[ZombRand(#titlesToChooseFrom)+1]
+	author = namedLit.BOOKS_keyedToAuthor[title]
+	year = randomYearFromWeighted
+
+	return title, author, year
+end
+
+
+---@param literature IsoObject|InventoryItem|Literature
+function namedLit.applyTextureBook(literature, title)
 	--[DEBUG]] print("DEBUG: namedLit: "..title)
-	local titleTextureID = namedLit.TITLES_iconIDs[title]
+	local titleTextureID = namedLit.BOOKS_iconIDs[title]
 	if titleTextureID then
 		--[DEBUG]] print("-- titleTextureID:"..titleTextureID)
 		local itemTexture = getTexture("media/textures/item/namedLitBook"..titleTextureID..".png")
 		if itemTexture then
 			--[DEBUG]] print("-- itemTexture:"..tostring(itemTexture))
-			book:setTexture(itemTexture)
+			literature:setTexture(itemTexture)
 		end
 	end
 

@@ -12,7 +12,7 @@ function ISReadABook:perform()
         local bodyDamage = player:getBodyDamage()
         local stats = player:getStats()
         local title = bookNameLitInfo["title"]
-        local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(title,player)
+        local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(self.item,title,player)
 
         stats:setStress(math.max(0,stats:getStress()+StressChange))
         bodyDamage:setUnhappynessLevel(math.max(0,bodyDamage:getUnhappynessLevel()+UnhappyChange))
@@ -33,9 +33,7 @@ function ISReadABook:update()
 
         local bodyDamage = self.character:getBodyDamage()
         local stats = self.character:getStats()
-        local UnhappyChange = namedLit.bookStats.UnhappyChange
-        local StressChange = namedLit.bookStats.StressChange
-        local BoredomChange = namedLit.bookStats.BoredomChange
+        local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(self.item,bookNameLitInfo["title"],self.character)
 
         if (BoredomChange < 0.0) then
             if bodyDamage:getBoredomLevel() > self.stats.boredom then

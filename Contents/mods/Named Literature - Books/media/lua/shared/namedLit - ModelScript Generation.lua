@@ -10,7 +10,7 @@ end
 Events.OnGameBoot.Add(generateBookModels)
 
 
-local function modifyBookScript()
+local function modifyLitScript()
     ---@type Item
     local bookScript = getScriptManager():getItem("Base.Book")
     bookScript:setUnhappyChange(0)
@@ -18,5 +18,12 @@ local function modifyBookScript()
     bookScript:setBoredomChange(0)
     bookScript:setDisappearOnUse(false)
     bookScript:setReplaceOnUse(nil)
+    ---@type Item
+    local magazineScript = getScriptManager():getItem("Base.Magazine")
+    magazineScript:setStressChange(0)
+    magazineScript:setBoredomChange(0)
+    magazineScript:setDisappearOnUse(false)
+    magazineScript:setReplaceOnUse(nil)
 end
-Events.OnGameBoot.Add(modifyBookScript)
+Events.OnGameBoot.Add(modifyLitScript)
+

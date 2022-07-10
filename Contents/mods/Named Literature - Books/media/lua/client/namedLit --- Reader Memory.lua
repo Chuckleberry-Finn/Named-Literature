@@ -1,22 +1,34 @@
-require "namedLit - Books"
+require "namedLit -- Main"
 
 namedLit.readerMemory = {}
 ---How many in-game 10 minute intervals to forget
 namedLit.readerMemory.timeToForget = 26280 --6 months
 namedLit.readerMemory.maxTimesReadable = 3
 
-function namedLit.readerMemory.statsImpact(title,player)
+function namedLit.readerMemory.statsImpact(literature,title,player)
     if not title or not player then return end
     local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
     local currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable, #specificBook.timesStampsWhenRead)
-
     local divisor = (2^currentTimeStampsLen)+currentTimeStampsLen
+    local literatureStats = namedLit.litStats[literature:getType()]
 
-    local UnhappyChange = math.floor(namedLit.bookStats.UnhappyChange/divisor)
-    local StressChange = math.floor(namedLit.bookStats.StressChange/divisor)
-    local BoredomChange = math.floor(namedLit.bookStats.BoredomChange/divisor)
+    if literatureStats then
+        local UnhappyChange = 0
+        local StressChange = 0
+        local BoredomChange = 0
 
-    return UnhappyChange, StressChange, BoredomChange
+        if literatureStats.UnhappyChange then
+            UnhappyChange = math.floor(literatureStats.UnhappyChange/divisor)
+        end
+        if literatureStats.StressChange then
+            StressChange = math.floor(literatureStats.StressChange/divisor)
+        end
+        if literatureStats.BoredomChange then
+            BoredomChange = math.floor(literatureStats.BoredomChange/divisor)
+        end
+
+        return UnhappyChange, StressChange, BoredomChange
+    end
 end
 
 

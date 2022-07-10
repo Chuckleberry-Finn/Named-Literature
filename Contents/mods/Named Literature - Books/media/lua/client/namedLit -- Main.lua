@@ -1,60 +1,69 @@
-require "namedLit - Books"
+namedLit = {}
 
-namedLit.StackableTypes = {["Base.Book"]=true}
+namedLit.StackableTypes = {["Base.Book"]=true,["Base.Magazine"]=true}
+namedLit.setLiterature = {}
+namedLit.litStats = {}
 
-namedLit.bookStats = {}
-namedLit.bookStats.UnhappyChange = -40
-namedLit.bookStats.StressChange = -40
-namedLit.bookStats.BoredomChange = -50
-
-
-function namedLit.getTitleAuthor()
-    local title
-    local author
-    local year
-
-    --namedLit.YEARS_weighted not set properly
-    if type(namedLit.YEARS_weighted) ~= "table" then
-        print("ERR: namedLit: namedLit.YEARS_weighted not initialized")
-        return
+function namedLit.stringToIconID(str,sets)
+    if string.len(str)<6 then
+        local stretch = 6-string.len(str)
+        for i=1, stretch do
+            str = str..str
+            if string.len(str)>=6 then
+                break
+            end
+        end
     end
 
-    local randomYearFromWeighted = namedLit.YEARS_weighted[ZombRand(#namedLit.YEARS_weighted)+1]
-    local titlesToChooseFrom = namedLit.TITLES_weighted[randomYearFromWeighted]
+    local stringy = (str:gsub('.', function (c) return string.format('%02X', string.byte(c)) end))
+    stringy = stringy:gsub("%D+", "")
+    stringy = stringy:gsub('0', '')
+    --only 1-9, no alpha no 0
 
-    title = titlesToChooseFrom[ZombRand(#titlesToChooseFrom)+1]
-    author = namedLit.TITLES_keyedToAuthor[title]
-    year = randomYearFromWeighted
+    local newID = tonumber(stringy:sub(-1))
 
-    return title, author, year
+    if sets then
+        for i=1, sets do
+            if (stringy:sub(i,i) % 2 == 0) then
+                newID = newID+9
+            end
+        end
+    end
+
+    return newID
 end
 
---[DEBUG]] for i=0, 10 do local t, a, y = namedLit.getTitleAuthor() print("-DEBUG: namedLit:  t:"..t.."  a:"..a.."  y:"..y) end
+---@param literature Literature | InventoryItem | IsoObject
+function namedLit.applyTexture(literature, title)
+    if not literature then return end
+    local func = namedLit["applyTexture"..literature:getType()]
+    if func then
+        func(literature, title)
+    end
+end
 
-namedLit.setBooks = {}
----@param book Literature | InventoryItem | IsoObject
-function namedLit.applyTitle(book)
-    if not book then return end
+---@param literature Literature | InventoryItem | IsoObject
+function namedLit.applyTitle(literature)
+    if not literature then return end
 
     local title, author, year
-    local bookNameLitInfo = book:getModData()["namedLit"]
-    if not bookNameLitInfo then
-        book:getModData()["namedLit"] = {}
-        bookNameLitInfo = book:getModData()["namedLit"]
+    local litNameLitInfo = literature:getModData()["namedLit"]
+    if not litNameLitInfo then
+        literature:getModData()["namedLit"] = {}
+        litNameLitInfo = literature:getModData()["namedLit"]
 
-        title, author, year = namedLit.getTitleAuthor()
-        if title then bookNameLitInfo["title"] = title end
-        if author then bookNameLitInfo["author"] =  author end
-        if year then bookNameLitInfo["year"] =  year end
+        title, author, year = namedLit["getLitInfo"..literature:getType()]()
+        if title then litNameLitInfo["title"] = title end
+        if author then litNameLitInfo["author"] =  author end
+        if year then litNameLitInfo["year"] =  year end
     end
 
-    if bookNameLitInfo then
-        title = bookNameLitInfo["title"]
-        book:setName(title)
-        namedLit.applyTexture(book, title)
+    if litNameLitInfo then
+        title = litNameLitInfo["title"]
+        literature:setName(title)
+        namedLit.applyTexture(literature, title)
     end
-
-    namedLit.setBooks[book] = true
+    namedLit.setLiterature[literature] = true
 end
 
 
@@ -66,7 +75,7 @@ function namedLiteratureContainerScan(ItemContainer)
         ---@type InventoryItem
         local item = items:get(iteration)
 
-        if item and namedLit.StackableTypes[item:getFullType()] and (not namedLit.setBooks[item]) then
+        if item and namedLit.StackableTypes[item:getFullType()] and (not namedLit.setLiterature[item]) then
             namedLit.applyTitle(item)
             --[DEBUG]] print("--n:"..item:getName().."  dn:"..item:getDisplayName().."  t:"..item:getType().."  ft:"..item:getFullType().."  c:"..item:getCategory())
         end
