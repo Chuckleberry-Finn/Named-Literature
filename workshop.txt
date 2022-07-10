@@ -4,7 +4,6 @@ title=Named Literature
 description=[img]https://i.imgur.com/p7Fv1Z6.gif[/img]
 description=
 description=[h3]The intention is to provide more flavor text and function for books found in game.[/h3]
-description=[b]This mod is a work-in-progress / proof-of-concept.[/b]
 description=
 description=[h3][b]This mod does not use item scripts. Everything is lua based.[/b][/h3]
 description=[list]
