@@ -1,6 +1,21 @@
 require "TimedActions/ISReadABook"
 require "namedLit --- Reader Memory"
 
+local crossRefMods = {
+    ["CatsWalkWhileReadMod"]="ReadFasterWhenSitting",
+    ["CatsReadMod"]="ReadFasterWhenSitting",
+    ["CatsReadMod(slower)"]="ReadFasterWhenSitting",
+}
+local loadedModIDs = {};
+local activeModIDs = getActivatedMods()
+for i=1, activeModIDs:size() do
+    local modID = activeModIDs:get(i-1)
+    if crossRefMods[modID] and not loadedModIDs[modID] then
+        require (crossRefMods[modID])
+        loadedModIDs[modID] = true
+    end
+end
+
 
 local ISReadABook_perform = ISReadABook.perform
 function ISReadABook:perform()
