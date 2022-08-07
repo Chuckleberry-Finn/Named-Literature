@@ -3,11 +3,19 @@ require "ISUI/ISInventoryPane"
 require "namedLit -- Main"
 require "namedLit --- Reader Memory"
 
+local crossRefMods = {
+    ["CatsWalkWhileReadMod"]="ReadFasterWhenSitting",
+    ["CatsReadMod"]="ReadFasterWhenSitting",
+    ["CatsReadMod(slower)"]="ReadFasterWhenSitting",
+}
 local activeMods = {}
 local activeModIDs = getActivatedMods()
-for i=1,activeModIDs:size() do
+for i=1, activeModIDs:size() do
     local modID = activeModIDs:get(i-1)
-    activeMods[modID] = true
+    if crossRefMods[modID] and not activeMods[modID] then
+        require (crossRefMods[modID])
+        activeMods[modID] = true
+    end
 end
 
 
