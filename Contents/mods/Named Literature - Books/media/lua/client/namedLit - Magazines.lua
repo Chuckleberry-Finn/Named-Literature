@@ -17,6 +17,7 @@ namedLit.MAGAZINES = {
 }
 
 namedLit.litStats.Magazine = {}
+namedLit.litStats.Magazine.showType = true
 namedLit.litStats.Magazine.StressChange = -15
 namedLit.litStats.Magazine.BoredomChange = -20
 

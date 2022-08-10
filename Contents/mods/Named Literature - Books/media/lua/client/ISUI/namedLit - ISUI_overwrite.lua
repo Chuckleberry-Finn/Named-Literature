@@ -36,14 +36,14 @@ function ISToolTipInv:setItem(book)
                 tooltipAddition = tooltipAddition.."\nPublished in "..year.."."
             end
 
-            if not author and not year then
-                tooltipAddition = tooltipAddition.."\n"..book:getScriptItem():getDisplayName()
+            if namedLit.litStats[book:getType()].showType then
+                tooltipAddition = tooltipAddition.."\n"..book:getScriptItem():getDisplayName().."\n"
             end
 
             local player = self.tooltip:getCharacter()
             local totalTimesRead = namedLit.readerMemory.getTotalTimesRead(title,player)
             if totalTimesRead then
-            tooltipAddition = tooltipAddition.."\n\nI've read this "..totalTimesRead.." time"
+            tooltipAddition = tooltipAddition.."\nI've read this "..totalTimesRead.." time"
             if totalTimesRead > 1 then tooltipAddition = tooltipAddition.."s." else tooltipAddition = tooltipAddition.."." end
             end
 

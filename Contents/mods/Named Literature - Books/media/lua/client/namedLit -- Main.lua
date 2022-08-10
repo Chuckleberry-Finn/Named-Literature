@@ -1,6 +1,6 @@
 namedLit = {}
 
-namedLit.StackableTypes = {["Base.Book"]=true,["Base.Magazine"]=true}
+namedLit.StackableTypes = {["Base.Book"]=true,["Base.Magazine"]=true,["Base.HottieZ"]=true}
 namedLit.setLiterature = {}
 namedLit.litStats = {}
 
@@ -52,10 +52,13 @@ function namedLit.applyTitle(literature)
         literature:getModData()["namedLit"] = {}
         litNameLitInfo = literature:getModData()["namedLit"]
 
-        title, author, year = namedLit["getLitInfo"..literature:getType()]()
-        if title then litNameLitInfo["title"] = title end
-        if author then litNameLitInfo["author"] =  author end
-        if year then litNameLitInfo["year"] =  year end
+        local infoFunc = namedLit["getLitInfo"..literature:getType()]
+        if infoFunc then
+            title, author, year = infoFunc()
+            if title then litNameLitInfo["title"] = title end
+            if author then litNameLitInfo["author"] =  author end
+            if year then litNameLitInfo["year"] =  year end
+        end
     end
 
     if litNameLitInfo then
