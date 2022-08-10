@@ -3,8 +3,21 @@ require "namedLit - ScriptModify"
 namedLit = {}
 namedLit.showType = {} --on tooltip
 namedLit.StackableTypes = {
+    ["Base.Book"]=true,
+    ["Base.Magazine"]=true,
+    ["Base.HottieZ"]=true,
 
-namedLit.StackableTypes = {["Base.Book"]=true,["Base.Magazine"]=true,["Base.HottieZ"]=true}
+    ["Base.TVMagazine"]=true,
+    ["Base.ComicBook"]=true,
+    ["Base.Newspaper"]=true,
+
+    ["Base.MagazineWordsearch3"]=true,
+    ["Base.MagazineWordsearch2"]=true,
+    ["Base.MagazineWordsearch1"]=true,
+    ["Base.MagazineCrossword3"]=true,
+    ["Base.MagazineCrossword2"]=true,
+    ["Base.MagazineCrossword1"]=true,
+}
 namedLit.setLiterature = {}
 
 function namedLit.stringToIconID(str,sets)
