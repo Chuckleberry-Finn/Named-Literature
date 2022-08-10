@@ -16,11 +16,7 @@ namedLit.MAGAZINES = {
     "Technology Review", "Theatre Arts", "Time",  "U.S. News and World Report",  "Vogue",  "Women’s sports & fitness",
 }
 
-namedLit.litStats.Magazine = {}
-namedLit.litStats.Magazine.showType = true
-namedLit.litStats.Magazine.StressChange = -15
-namedLit.litStats.Magazine.BoredomChange = -20
-
+namedLit.showType.Magazine = true
 
 function namedLit.getLitInfoMagazine()
     local title = namedLit.MAGAZINES[ZombRand(#namedLit.MAGAZINES)+1]

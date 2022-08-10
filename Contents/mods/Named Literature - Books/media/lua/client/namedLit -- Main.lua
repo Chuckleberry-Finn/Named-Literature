@@ -2,7 +2,6 @@ namedLit = {}
 
 namedLit.StackableTypes = {["Base.Book"]=true,["Base.Magazine"]=true,["Base.HottieZ"]=true}
 namedLit.setLiterature = {}
-namedLit.litStats = {}
 
 function namedLit.stringToIconID(str,sets)
     if string.len(str)<6 then

@@ -3204,11 +3204,6 @@ namedLit.BOOKS = {
 
 }
 
-namedLit.litStats.Book = {}
-namedLit.litStats.Book.UnhappyChange = -40
-namedLit.litStats.Book.StressChange = -40
-namedLit.litStats.Book.BoredomChange = -50
-
 namedLit.BOOKS_weighted = false
 namedLit.BOOKS_keyedToAuthor = {}
 namedLit.BOOKS_iconIDs = {}

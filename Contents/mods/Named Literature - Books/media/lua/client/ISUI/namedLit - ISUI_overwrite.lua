@@ -36,7 +36,7 @@ function ISToolTipInv:setItem(book)
                 tooltipAddition = tooltipAddition.."\nPublished in "..year.."."
             end
 
-            if namedLit.litStats[book:getType()].showType then
+            if namedLit.showType[book:getType()] then
                 tooltipAddition = tooltipAddition.."\n"..book:getScriptItem():getDisplayName().."\n"
             end
 
@@ -51,21 +51,19 @@ function ISToolTipInv:setItem(book)
             if BoredomChange or StressChange or UnhappyChange then tooltipAddition = tooltipAddition.."\n" end
 
             if BoredomChange ~= 0 then
-            tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Boredom_Reduction")..": "..BoredomChange
-        end
-
-        if StressChange ~= 0 then
-        tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Stress_Reduction")..": "..StressChange
-        end
-
-        if UnhappyChange ~= 0 then
-        tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_food_Unhappiness")..": "..UnhappyChange
-        end
-
-        if tooltipAddition ~= "" then
-            book:setTooltip(tooltipAddition)
+                tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Boredom_Reduction")..": "..BoredomChange
             end
+            if StressChange ~= 0 then
+                tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Stress_Reduction")..": "..StressChange
             end
+            if UnhappyChange ~= 0 then
+                tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_food_Unhappiness")..": "..UnhappyChange
+            end
+
+            if tooltipAddition ~= "" then
+                book:setTooltip(tooltipAddition)
+            end
+        end
     end
 end
 

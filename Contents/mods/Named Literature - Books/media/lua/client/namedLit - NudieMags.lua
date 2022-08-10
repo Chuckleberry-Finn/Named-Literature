@@ -24,11 +24,6 @@ namedLit.NUDIEMAGS = {
     },
 }
 
-namedLit.litStats.HottieZ = {}
-namedLit.litStats.HottieZ.StressChange = -50
-namedLit.litStats.HottieZ.BoredomChange = -40
---namedLit.litStats.HottieZ.UnhappyChange
-
 function namedLit.getLitInfoHottieZ()
     local poolLength = (#namedLit.NUDIEMAGS.F)+(#namedLit.NUDIEMAGS.M)
     local pick = ZombRand(poolLength)+1
