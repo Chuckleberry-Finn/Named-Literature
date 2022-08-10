@@ -1,4 +1,8 @@
+require "namedLit - ScriptModify"
+
 namedLit = {}
+namedLit.showType = {} --on tooltip
+namedLit.StackableTypes = {
 
 namedLit.StackableTypes = {["Base.Book"]=true,["Base.Magazine"]=true,["Base.HottieZ"]=true}
 namedLit.setLiterature = {}
@@ -60,12 +64,12 @@ function namedLit.applyTitle(literature)
         end
     end
 
-    if litNameLitInfo then
+    if title and litNameLitInfo then
         title = litNameLitInfo["title"]
         literature:setName(title)
         namedLit.applyTexture(literature, title)
+        namedLit.setLiterature[literature] = true
     end
-    namedLit.setLiterature[literature] = true
 end
 
 
@@ -85,7 +89,7 @@ function namedLiteratureContainerScan(ItemContainer)
 end
 
 ---@param ItemContainer ItemContainer
-function namedLiteratureOnFillContainer(a, b, ItemContainer)
+function namedLiteratureOnFillContainer(_, _, ItemContainer)
     namedLiteratureContainerScan(ItemContainer)
 end
 Events.OnFillContainer.Add(namedLiteratureOnFillContainer)

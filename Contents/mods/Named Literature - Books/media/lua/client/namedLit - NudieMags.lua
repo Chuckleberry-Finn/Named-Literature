@@ -1,16 +1,6 @@
---     item HottieZ
---    {
---        DisplayCategory = Literature, Weight	=	0.2,
---        Type	=	Literature,
---        DisplayName	=	HottieZ,
---        StressChange	=	-50,
---        Icon	=	MagazineNudie1,
---        BoredomChange	=	-40,
---        StaticModel = Magazine,
---        WorldStaticModel = MagazineOpenGround,
---    }
-
 require "namedLit -- Main"
+
+namedLit.showType.HottieZ = true
 
 namedLit.NUDIEMAGS = {
     F = { "Adam Film World", "Adam Film World Guide", "Barely Legal", "Hustler Magazine", "Beaver Hunt", "Celebrity Skin",

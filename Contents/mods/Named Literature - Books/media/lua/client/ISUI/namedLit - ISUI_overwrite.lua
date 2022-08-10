@@ -29,6 +29,8 @@ function ISToolTipInv:setItem(book)
             local tooltipAddition = ""
             local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
 
+            if not title then return end
+
             if author then
                 tooltipAddition = tooltipAddition.."\nBy "..author
             end
@@ -42,13 +44,17 @@ function ISToolTipInv:setItem(book)
 
             local player = self.tooltip:getCharacter()
             local totalTimesRead = namedLit.readerMemory.getTotalTimesRead(title,player)
+
             if totalTimesRead then
-            tooltipAddition = tooltipAddition.."\nI've read this "..totalTimesRead.." time"
-            if totalTimesRead > 1 then tooltipAddition = tooltipAddition.."s." else tooltipAddition = tooltipAddition.."." end
+                tooltipAddition = tooltipAddition.."\nI've read this "..totalTimesRead.." time"
+                if totalTimesRead > 1 then
+                    tooltipAddition = tooltipAddition.."s."
+                else
+                    tooltipAddition = tooltipAddition.."."
+                end
             end
 
             local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(book,title,player)
-            if BoredomChange or StressChange or UnhappyChange then tooltipAddition = tooltipAddition.."\n" end
 
             if BoredomChange ~= 0 then
                 tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Boredom_Reduction")..": "..BoredomChange

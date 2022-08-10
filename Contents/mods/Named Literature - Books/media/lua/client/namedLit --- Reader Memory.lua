@@ -10,13 +10,13 @@ function namedLit.readerMemory.statsImpact(literature,title,player)
     local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
     local currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable, #specificBook.timesStampsWhenRead)
     local divisor = (2^currentTimeStampsLen)+currentTimeStampsLen
-    local literatureStats = namedLit.litStats[literature:getType()]
+    local literatureStats = namedLitStats[literature:getType()]
+
+    local UnhappyChange = 0
+    local StressChange = 0
+    local BoredomChange = 0
 
     if literatureStats then
-        local UnhappyChange = 0
-        local StressChange = 0
-        local BoredomChange = 0
-
         if literatureStats.UnhappyChange then
             UnhappyChange = math.floor(literatureStats.UnhappyChange/divisor)
         end
@@ -26,9 +26,9 @@ function namedLit.readerMemory.statsImpact(literature,title,player)
         if literatureStats.BoredomChange then
             BoredomChange = math.floor(literatureStats.BoredomChange/divisor)
         end
-
-        return UnhappyChange, StressChange, BoredomChange
     end
+
+    return UnhappyChange, StressChange, BoredomChange
 end
 
 

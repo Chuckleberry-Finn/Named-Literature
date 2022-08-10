@@ -1,15 +1,12 @@
-require "namedLit -- Main"
-
-namedLit.litStats = {}
-
+namedLitStats = {}
 local function modifyLitScript()
     for type,_ in pairs(namedLit.StackableTypes) do
         local bookScript = getScriptManager():getItem(type)
         if bookScript then
 
-            local justType = bookScript:getType()
-            namedLit.litStats[justType] = {}
-            local litStats = namedLit.litStats[justType]
+            local justType = bookScript:getName()
+            namedLitStats[justType] = {}
+            local litStats = namedLitStats[justType]
 
             litStats.UnhappyChange = bookScript:getUnhappyChange()
             litStats.StressChange = bookScript:getStressChange()
