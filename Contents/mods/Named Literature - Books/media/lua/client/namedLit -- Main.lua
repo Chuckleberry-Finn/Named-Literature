@@ -77,12 +77,15 @@ function namedLit.applyTitle(literature)
         end
     end
 
-    if title and litNameLitInfo then
+    if litNameLitInfo then
         title = litNameLitInfo["title"]
+    end
+
+    if title and litNameLitInfo then
         literature:setName(title)
         namedLit.applyTexture(literature, title)
-        namedLit.setLiterature[literature] = true
     end
+    namedLit.setLiterature[literature] = true
 end
 
 
