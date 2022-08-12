@@ -1,5 +1,3 @@
-require "namedLit - ScriptModify"
-
 namedLit = {}
 namedLit.showType = {} --on tooltip
 namedLit.StackableTypes = {

@@ -31,6 +31,9 @@ function ISReadABook:update()
     local bookNameLitInfo = self.item:getModData()["namedLit"]
     if bookNameLitInfo and self.stats then
 
+        local title = bookNameLitInfo["title"]
+        if not title then return end
+
         local bodyDamage = self.character:getBodyDamage()
         local stats = self.character:getStats()
         local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(self.item,bookNameLitInfo["title"],self.character)
