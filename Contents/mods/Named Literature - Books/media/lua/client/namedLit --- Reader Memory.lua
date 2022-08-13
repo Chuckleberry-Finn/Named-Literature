@@ -9,8 +9,8 @@ namedLit.readerMemory.maxTimesReadable = 3
 ---@param player IsoPlayer|IsoGameCharacter|IsoMovingObject|IsoObject
 function namedLit.readerMemory.getOrSetReaderID(player)
     if not player then return end
-    player:getModData()["namedLit"] = player:getModData()["namedLit"] or {}
-    local playerNamedLitData = player:getModData()["namedLit"]
+    player:getModData()["namedLitReaderMemory"] = player:getModData()["namedLitReaderMemory"] or {}
+    local playerNamedLitData = player:getModData()["namedLitReaderMemory"]
     playerNamedLitData.readerID = playerNamedLitData.readerID or getRandomUUID()..tostring(player:getSteamID())
     return playerNamedLitData.readerID
 end
