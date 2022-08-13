@@ -1,1 +1,1 @@
-Events.OnGameBoot.Add(print("Named Literature: ver:0.7.2-HOTFIX-AUG-12"))
+Events.OnGameBoot.Add(print("Named Literature: ver:0.7.5-REFACTOR-AUG-12"))
