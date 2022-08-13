@@ -17,7 +17,8 @@ function ISReadABook:perform()
         stats:setStress(math.max(0,stats:getStress()+StressChange))
         bodyDamage:setUnhappynessLevel(math.max(0,bodyDamage:getUnhappynessLevel()+UnhappyChange))
         bodyDamage:setBoredomLevel(math.max(0,bodyDamage:getBoredomLevel()+BoredomChange))
-        namedLit.readerMemory.addReadTime(title,self.character)
+
+        namedLit.readerMemory.addReadTime(self.item,title,self.character)
     end
 
     ISReadABook_perform(self)
@@ -31,12 +32,13 @@ function ISReadABook:update()
     local bookNameLitInfo = self.item:getModData()["namedLit"]
     if bookNameLitInfo and self.stats then
 
-        local title = bookNameLitInfo["title"]
-        if not title then return end
-
         local bodyDamage = self.character:getBodyDamage()
         local stats = self.character:getStats()
-        local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(self.item,bookNameLitInfo["title"],self.character)
+
+        local UnhappyChange, StressChange, BoredomChange = 0, 0, 0
+
+        local title = bookNameLitInfo["title"] or nil
+        UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(self.item,bookNameLitInfo["title"],self.character)
 
         if (BoredomChange < 0.0) then
             if bodyDamage:getBoredomLevel() > self.stats.boredom then

@@ -5,10 +5,43 @@ namedLit.readerMemory = {}
 namedLit.readerMemory.timeToForget = 26280 --6 months
 namedLit.readerMemory.maxTimesReadable = 3
 
+
+---@param player IsoPlayer|IsoGameCharacter|IsoMovingObject|IsoObject
+function namedLit.readerMemory.getOrSetReaderID(player)
+    if not player then return end
+    player:getModData()["namedLit"] = player:getModData()["namedLit"] or {}
+    local playerNamedLitData = player:getModData()["namedLit"]
+    playerNamedLitData.readerID = playerNamedLitData.readerID or getRandomUUID()..tostring(player:getSteamID())
+    return playerNamedLitData.readerID
+end
+
+
+---@param literature Literature
+---@param title string
+---@param player IsoPlayer|IsoGameCharacter|IsoMovingObject|IsoObject
 function namedLit.readerMemory.statsImpact(literature,title,player)
-    if not title or not player then return end
-    local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
-    local currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable, #specificBook.timesStampsWhenRead)
+    if (not literature and not title) or not player then return end
+
+    local currentTimeStampsLen = 0
+    if title then
+        local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
+        currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable, #specificBook.timesStampsWhenRead)
+    else
+        local bookNameLitInfo = literature:getModData()["namedLit"]
+        local playerReaderID = namedLit.readerMemory.getOrSetReaderID(player)
+        bookNameLitInfo.readers = bookNameLitInfo.readers or {}
+
+        local readerMemory = bookNameLitInfo.readers[playerReaderID]
+        -- readerMemory.totalTimesRead, #readerMemory.timesStampsWhenRead
+        if readerMemory then
+            local readTimes = readerMemory.timesStampsWhenRead
+            if readTimes then
+                namedLit.readerMemory.validateSpecificReadTimes(nil,readTimes,player)
+                currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable,#readerMemory.timesStampsWhenRead)
+            end
+        end
+    end
+
     local divisor = (2^currentTimeStampsLen)+currentTimeStampsLen
     local literatureStats = namedLitStats[literature:getType()]
 
@@ -43,10 +76,20 @@ function namedLit.readerMemory.getSpecificBook(title,player)
 end
 
 
-function namedLit.readerMemory.getTotalTimesRead(title,player)
-    if not title or not player then return end
-    local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
-    return specificBook.totalTimesRead, #specificBook.timesStampsWhenRead
+function namedLit.readerMemory.getTotalTimesRead(book,title,player)
+    if (not book and not title) or not player then return end
+
+    if title then
+        local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
+        return specificBook.totalTimesRead, #specificBook.timesStampsWhenRead
+    else
+        local bookNameLitInfo = book:getModData()["namedLit"]
+        local playerReaderID = namedLit.readerMemory.getOrSetReaderID(player)
+        bookNameLitInfo.readers = bookNameLitInfo.readers or {}
+        local readerMemory = bookNameLitInfo.readers[playerReaderID]
+        if not readerMemory then return 0, 0 end
+        return readerMemory.totalTimesRead, #readerMemory.timesStampsWhenRead
+    end
 end
 
 
@@ -79,16 +122,30 @@ function namedLit.readerMemory.validateSpecificReadTimes(title,directTimesRead,p
 end
 
 
-function namedLit.readerMemory.addReadTime(title,player)
-    if not title or not player then return end
-    local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
-    local specificBookTSWR = specificBook.timesStampsWhenRead
+function namedLit.readerMemory.addReadTime(book,title,player)
+    if (not book and not title) or not player then return end
+
+    local specificBookTSWR
+
+    if title then
+        local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
+        specificBookTSWR = specificBook.timesStampsWhenRead
+        specificBook.totalTimesRead = (specificBook.totalTimesRead or 0)+1
+    else
+        local playerReaderID = namedLit.readerMemory.getOrSetReaderID(player)
+        local bookNameLitInfo = book:getModData()["namedLit"]
+
+        bookNameLitInfo.readers = bookNameLitInfo.readers or {}
+        bookNameLitInfo.readers[playerReaderID] = bookNameLitInfo.readers[playerReaderID] or {}
+        local readerMemory = bookNameLitInfo.readers[playerReaderID]
+        readerMemory.timesStampsWhenRead = readerMemory.timesStampsWhenRead or {}
+        specificBookTSWR = readerMemory.timesStampsWhenRead
+        readerMemory.totalTimesRead = (readerMemory.totalTimesRead or 0)+1
+    end
 
     table.insert(specificBookTSWR, getGametimeTimestamp())
-    specificBook.totalTimesRead = specificBook.totalTimesRead or 0
-    specificBook.totalTimesRead = specificBook.totalTimesRead+1
 
-    if #specificBookTSWR > namedLit.readerMemory.maxTimesReadable then
+    while #specificBookTSWR > namedLit.readerMemory.maxTimesReadable do
         table.remove(specificBookTSWR, 1)
     end
 end

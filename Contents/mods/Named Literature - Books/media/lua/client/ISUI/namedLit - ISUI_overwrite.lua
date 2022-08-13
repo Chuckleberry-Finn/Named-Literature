@@ -29,32 +29,27 @@ function ISToolTipInv:setItem(book)
             local tooltipAddition = ""
             local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
 
-            if not title then return end
-
-            if author then
-                tooltipAddition = tooltipAddition.."\nBy "..author
-            end
-            if year then
-                tooltipAddition = tooltipAddition.."\nPublished in "..year.."."
-            end
+            if author then tooltipAddition = tooltipAddition.."\nBy "..author end
+            if year then tooltipAddition = tooltipAddition.."\nPublished in "..year.."." end
+            if author or year then tooltipAddition = tooltipAddition.."\n" end
 
             if namedLit.showType[book:getType()] then
                 tooltipAddition = tooltipAddition.."\n"..book:getScriptItem():getDisplayName().."\n"
             end
 
             local player = self.tooltip:getCharacter()
-            local totalTimesRead = namedLit.readerMemory.getTotalTimesRead(title,player)
+            local totalTimesRead = namedLit.readerMemory.getTotalTimesRead(book, title, player)
 
-            if totalTimesRead then
+            if totalTimesRead and totalTimesRead>0 then
                 tooltipAddition = tooltipAddition.."\nI've read this "..totalTimesRead.." time"
                 if totalTimesRead > 1 then
-                    tooltipAddition = tooltipAddition.."s."
+                    tooltipAddition = tooltipAddition.."s.\n"
                 else
-                    tooltipAddition = tooltipAddition.."."
+                    tooltipAddition = tooltipAddition..".\n"
                 end
             end
 
-            local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(book,title,player)
+            local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(book, title, player)
 
             if BoredomChange ~= 0 then
                 tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Boredom_Reduction")..": "..BoredomChange
