@@ -19,54 +19,199 @@ for i=1, activeModIDs:size() do
 end
 
 
-local ISToolTipInv_setItem = ISToolTipInv.setItem
-function ISToolTipInv:setItem(book)
-    ISToolTipInv_setItem(self, book)
-    if namedLit.StackableTypes[book:getFullType()] then
-        local bookNameLitInfo = book:getModData()["namedLit"]
-        if bookNameLitInfo then
 
-            local tooltipAddition = ""
-            local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
 
-            if author then tooltipAddition = tooltipAddition.."\nBy "..author end
-            if year then tooltipAddition = tooltipAddition.."\nPublished in "..year.."." end
-            if author or year then tooltipAddition = tooltipAddition.."\n" end
+local fontDict = { ["Small"] = UIFont.NewSmall, ["Medium"] = UIFont.NewMedium, ["Large"] = UIFont.NewLarge, }
+local fontBounds = { ["Small"] = 28, ["Medium"] = 32, ["Large"] = 42, }
 
-            if namedLit.showType[book:getType()] then
-                tooltipAddition = tooltipAddition.."\n"..book:getScriptItem():getDisplayName().."\n"
+
+local function ISToolTipInv_render_Override(self,hardSetWidth)
+    if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
+        local mx = getMouseX() + 24
+        local my = getMouseY() + 24
+        if not self.followMouse then
+            mx = self:getX()
+            my = self:getY()
+            if self.anchorBottomLeft then
+                mx = self.anchorBottomLeft.x
+                my = self.anchorBottomLeft.y
             end
+        end
 
-            local player = self.tooltip:getCharacter()
-            local totalTimesRead = namedLit.readerMemory.getTotalTimesRead(book, title, player)
+        self.tooltip:setX(mx+11)
+        self.tooltip:setY(my)
+        self.tooltip:setWidth(50)
+        self.tooltip:setMeasureOnly(true)
+        self.item:DoTooltip(self.tooltip)
+        self.tooltip:setMeasureOnly(false)
 
-            if totalTimesRead and totalTimesRead>0 then
-                tooltipAddition = tooltipAddition.."\nI've read this "..totalTimesRead.." time"
-                if totalTimesRead > 1 then
-                    tooltipAddition = tooltipAddition.."s.\n"
-                else
-                    tooltipAddition = tooltipAddition..".\n"
+        local myCore = getCore()
+        local maxX = myCore:getScreenWidth()
+        local maxY = myCore:getScreenHeight()
+        local tw = self.tooltip:getWidth()
+        local th = self.tooltip:getHeight()
+
+        self.tooltip:setX(math.max(0, math.min(mx + 11, maxX - tw - 1)))
+        if not self.followMouse and self.anchorBottomLeft then
+            self.tooltip:setY(math.max(0, math.min(my - th, maxY - th - 1)))
+        else
+            self.tooltip:setY(math.max(0, math.min(my, maxY - th - 1)))
+        end
+
+        self:setX(self.tooltip:getX() - 11)
+        self:setY(self.tooltip:getY())
+        self:setWidth(hardSetWidth or (tw + 11))
+        self:setHeight(th)
+
+        if self.followMouse then
+            self:adjustPositionToAvoidOverlap({ x = mx - 24 * 2, y = my - 24 * 2, width = 24 * 2, height = 24 * 2 })
+        end
+
+        self:drawRect(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
+        self:drawRectBorder(0, 0, self.width, self.height, self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
+        self.item:DoTooltip(self.tooltip)
+    end
+end
+
+
+local ISToolTipInv_render = ISToolTipInv.render
+function ISToolTipInv.render(self)
+    if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
+        local itemObj = self.item
+        if namedLit.StackableTypes[itemObj:getFullType()] then
+            local bookNameLitInfo = itemObj:getModData()["namedLit"]
+            if bookNameLitInfo then
+
+                local font = getCore():getOptionTooltipFont()
+                local fontType = fontDict[font] or UIFont.Medium
+                local textWidth = self.tooltip:getWidth()
+                local lineHeight = getTextManager():getFontFromEnum(fontType):getLineHeight()
+                local fnt = {r=1, g=1, b=0.8, a=1}
+                local fntColor = { green={r=0.3,g=1.0,b=0.2,a=1}, red={r=0.8,g=0.3,b=0.2,a=1} }
+
+                local tooltipY = self.tooltip:getHeight()-1
+
+                local x = 15
+                local height = 8
+
+                local title, author, year = bookNameLitInfo["title"], bookNameLitInfo["author"], bookNameLitInfo["year"]
+                local authorText, yearText, showTypeText
+
+                if author then
+                    height = height+lineHeight
+                    authorText = getText("IGUI_namedLit_AUTHOR",author)
+                    textWidth = math.max(getTextManager():MeasureStringX(fontType, authorText),textWidth)
                 end
-            end
 
-            local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(book, title, player)
+                if year then
+                    height = height+lineHeight
+                    yearText = getText("IGUI_namedLit_PUBLISHED",year)
+                    textWidth = math.max(getTextManager():MeasureStringX(fontType, yearText),textWidth)
+                end
 
-            if BoredomChange ~= 0 then
-                tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Boredom_Reduction")..": "..BoredomChange
-            end
-            if StressChange ~= 0 then
-                tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_literature_Stress_Reduction")..": "..StressChange
-            end
-            if UnhappyChange ~= 0 then
-                tooltipAddition = tooltipAddition.."\n"..getText("Tooltip_food_Unhappiness")..": "..UnhappyChange
-            end
+                if author or year then height = height+lineHeight end
 
-            if tooltipAddition ~= "" then
-                book:setTooltip(tooltipAddition)
+                if namedLit.showType[itemObj:getType()] then
+                    showTypeText = itemObj:getScriptItem():getDisplayName()
+                    textWidth = math.max(getTextManager():MeasureStringX(fontType, showTypeText),textWidth)
+                    height = height+lineHeight+lineHeight
+                end
+
+                local player = self.tooltip:getCharacter()
+                local totalTimesRead = namedLit.readerMemory.getTotalTimesRead(itemObj, title, player)
+                local totalTimesReadText
+                if totalTimesRead and totalTimesRead>0 then
+                    if totalTimesRead > 1 then totalTimesReadText = getText("IGUI_namedLit_TIMESREAD", totalTimesRead)
+                    else totalTimesReadText = getText("IGUI_namedLit_TIMEREAD", totalTimesRead) end
+                    textWidth = math.max(getTextManager():MeasureStringX(fontType, totalTimesReadText),textWidth)
+                    height = height+lineHeight+lineHeight
+                end
+
+                local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(itemObj, title, player)
+                local UnhappyChangeText, StressChangeText, BoredomChangeText
+
+                if BoredomChange ~= 0 then
+                    BoredomChangeText = getText("Tooltip_literature_Boredom_Reduction")..": "
+                    textWidth = math.max(getTextManager():MeasureStringX(fontType, BoredomChangeText..BoredomChange),textWidth)
+                    height = height+lineHeight
+                end
+                if StressChange ~= 0 then
+                    StressChangeText = getText("Tooltip_literature_Stress_Reduction")..": "
+                    textWidth = math.max(getTextManager():MeasureStringX(fontType, StressChangeText..StressChange),textWidth)
+                    height = height+lineHeight
+                end
+                if UnhappyChange ~= 0 then
+                    UnhappyChangeText = getText("Tooltip_food_Unhappiness")..": "
+                    textWidth = math.max(getTextManager():MeasureStringX(fontType, UnhappyChangeText..UnhappyChange),textWidth)
+                    height = height+lineHeight
+                end
+                height = height+lineHeight
+
+                local journalTooltipWidth = textWidth+fontBounds[font]
+                ISToolTipInv_render_Override(self,journalTooltipWidth)
+
+                self:setX(self.tooltip:getX() - 11)
+                if self.x > 1 and self.y > 1 then
+                    local bgColor = self.backgroundColor
+                    local bdrColor = self.borderColor
+                    self:drawRect(0, tooltipY-1, journalTooltipWidth, height, math.min(1,bgColor.a+0.4), bgColor.r, bgColor.g, bgColor.b)
+                    self:drawRectBorder(0, tooltipY-1, journalTooltipWidth, height, bdrColor.a, bdrColor.r, bdrColor.g, bdrColor.b)
+                end
+
+                local y = tooltipY-(lineHeight/2)
+
+                if author then
+                    y = y+lineHeight
+                    self:drawText(authorText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
+                end
+
+                if year then
+                    y = y+lineHeight
+                    self:drawText(yearText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
+                end
+
+                if author or year then y = y+lineHeight end
+
+                if showTypeText then
+                    y = y+lineHeight
+                    self:drawText(showTypeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
+                    y = y+lineHeight
+                end
+
+                if totalTimesReadText then
+                    y = y+lineHeight
+                    self:drawText(totalTimesReadText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
+                    y = y+lineHeight
+                end
+
+                local color = fnt
+                if BoredomChangeText then
+                    y = y+lineHeight
+                    if BoredomChange < 0 then color = fntColor.green elseif BoredomChange > 0 then color = fntColor.red end
+                    self:drawText(BoredomChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
+                    self:drawText(tostring(BoredomChange), getTextManager():MeasureStringX(fontType, BoredomChangeText)+fontBounds[font], (y+(15-lineHeight)/2), color.r, color.g, color.b, color.a, fontType)
+                end
+                if StressChange ~= 0 then
+                    y = y+lineHeight
+                    if StressChange < 0 then color = fntColor.green elseif StressChange > 0 then color = fntColor.red end
+                    self:drawText(StressChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
+                    self:drawText(tostring(StressChange), getTextManager():MeasureStringX(fontType, StressChangeText)+fontBounds[font], (y+(15-lineHeight)/2), color.r, color.g, color.b, color.a, fontType)
+                end
+                if UnhappyChange ~= 0 then
+                    y = y+lineHeight
+                    if UnhappyChange < 0 then color = fntColor.green elseif UnhappyChange > 0 then color = fntColor.red end
+                    self:drawText(UnhappyChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
+                    self:drawText(tostring(UnhappyChange), getTextManager():MeasureStringX(fontType, UnhappyChangeText)+fontBounds[font], (y+(15-lineHeight)/2), color.r, color.g, color.b, color.a, fontType)
+                end
+
             end
+        else
+            ISToolTipInv_render(self)
         end
     end
 end
+
+
 
 
 function ISInventoryPane:refreshContainer()

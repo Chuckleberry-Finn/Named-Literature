@@ -1,0 +1,6 @@
+IGUI_EN = {
+    IGUI_namedLit_TIMEREAD = "I've read this %1 time.",
+    IGUI_namedLit_TIMESREAD = "I've read this %1 times.",
+    IGUI_namedLit_AUTHOR = "By %1",
+    IGUI_namedLit_PUBLISHED = "Published in %1.",
+}
