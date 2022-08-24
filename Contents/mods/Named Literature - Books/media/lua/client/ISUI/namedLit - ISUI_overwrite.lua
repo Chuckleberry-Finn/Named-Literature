@@ -84,7 +84,7 @@ function ISToolTipInv.render(self)
 
                 local font = getCore():getOptionTooltipFont()
                 local fontType = fontDict[font] or UIFont.Medium
-                local textWidth = self.tooltip:getWidth()
+                local textWidth = 0
                 local lineHeight = getTextManager():getFontFromEnum(fontType):getLineHeight()
                 local fnt = {r=1, g=1, b=0.8, a=1}
                 local fntColor = { green={r=0.3,g=1.0,b=0.2,a=1}, red={r=0.8,g=0.3,b=0.2,a=1} }
@@ -147,7 +147,7 @@ function ISToolTipInv.render(self)
                 end
                 height = height+lineHeight
 
-                local journalTooltipWidth = textWidth+fontBounds[font]
+                local journalTooltipWidth = math.max(self.tooltip:getWidth(),textWidth)+fontBounds[font]
                 ISToolTipInv_render_Override(self,journalTooltipWidth)
 
                 self:setX(self.tooltip:getX() - 11)
@@ -185,23 +185,24 @@ function ISToolTipInv.render(self)
                 end
 
                 local color = fnt
+                local gap = fontBounds[font]
                 if BoredomChangeText then
                     y = y+lineHeight
                     if BoredomChange < 0 then color = fntColor.green elseif BoredomChange > 0 then color = fntColor.red end
                     self:drawText(BoredomChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
-                    self:drawText(tostring(BoredomChange), getTextManager():MeasureStringX(fontType, BoredomChangeText)+fontBounds[font], y, color.r, color.g, color.b, color.a, fontType)
+                    self:drawTextRight(tostring(BoredomChange), textWidth+gap, y, color.r, color.g, color.b, color.a, fontType)
                 end
                 if StressChange ~= 0 then
                     y = y+lineHeight
                     if StressChange < 0 then color = fntColor.green elseif StressChange > 0 then color = fntColor.red end
                     self:drawText(StressChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
-                    self:drawText(tostring(StressChange), getTextManager():MeasureStringX(fontType, StressChangeText)+fontBounds[font], y, color.r, color.g, color.b, color.a, fontType)
+                    self:drawTextRight(tostring(StressChange), textWidth+gap, y, color.r, color.g, color.b, color.a, fontType)
                 end
                 if UnhappyChange ~= 0 then
                     y = y+lineHeight
                     if UnhappyChange < 0 then color = fntColor.green elseif UnhappyChange > 0 then color = fntColor.red end
                     self:drawText(UnhappyChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
-                    self:drawText(tostring(UnhappyChange), getTextManager():MeasureStringX(fontType, UnhappyChangeText)+fontBounds[font], y, color.r, color.g, color.b, color.a, fontType)
+                    self:drawTextRight(tostring(UnhappyChange), textWidth+gap, y, color.r, color.g, color.b, color.a, fontType)
                 end
 
             end
