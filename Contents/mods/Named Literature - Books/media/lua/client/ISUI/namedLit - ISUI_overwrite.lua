@@ -189,19 +189,19 @@ function ISToolTipInv.render(self)
                     y = y+lineHeight
                     if BoredomChange < 0 then color = fntColor.green elseif BoredomChange > 0 then color = fntColor.red end
                     self:drawText(BoredomChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
-                    self:drawText(tostring(BoredomChange), getTextManager():MeasureStringX(fontType, BoredomChangeText)+fontBounds[font], (y+(15-lineHeight)/2), color.r, color.g, color.b, color.a, fontType)
+                    self:drawText(tostring(BoredomChange), getTextManager():MeasureStringX(fontType, BoredomChangeText)+fontBounds[font], y, color.r, color.g, color.b, color.a, fontType)
                 end
                 if StressChange ~= 0 then
                     y = y+lineHeight
                     if StressChange < 0 then color = fntColor.green elseif StressChange > 0 then color = fntColor.red end
                     self:drawText(StressChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
-                    self:drawText(tostring(StressChange), getTextManager():MeasureStringX(fontType, StressChangeText)+fontBounds[font], (y+(15-lineHeight)/2), color.r, color.g, color.b, color.a, fontType)
+                    self:drawText(tostring(StressChange), getTextManager():MeasureStringX(fontType, StressChangeText)+fontBounds[font], y, color.r, color.g, color.b, color.a, fontType)
                 end
                 if UnhappyChange ~= 0 then
                     y = y+lineHeight
                     if UnhappyChange < 0 then color = fntColor.green elseif UnhappyChange > 0 then color = fntColor.red end
                     self:drawText(UnhappyChangeText, x+1, y, fnt.r, fnt.g, fnt.b, fnt.a, fontType)
-                    self:drawText(tostring(UnhappyChange), getTextManager():MeasureStringX(fontType, UnhappyChangeText)+fontBounds[font], (y+(15-lineHeight)/2), color.r, color.g, color.b, color.a, fontType)
+                    self:drawText(tostring(UnhappyChange), getTextManager():MeasureStringX(fontType, UnhappyChangeText)+fontBounds[font], y, color.r, color.g, color.b, color.a, fontType)
                 end
 
             end
