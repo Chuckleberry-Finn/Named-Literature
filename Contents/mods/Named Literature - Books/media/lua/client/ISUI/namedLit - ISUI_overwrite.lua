@@ -213,8 +213,19 @@ function ISToolTipInv.render(self)
     end
 end
 
-
-
+--[[
+local _refreshContainer = ISInventoryPane.refreshContainer
+function ISInventoryPane:refreshContainer()
+    _refreshContainer(self)
+    for _, entry in ipairs(self.itemslist) do
+        for _,item in pairs(entry.items) do
+            if namedLit.StackableTypes[item:getFullType()] and not namedLit.setLiterature[item] then
+                namedLit.applyTitle(item)
+            end
+        end
+    end
+end
+--]]
 
 function ISInventoryPane:refreshContainer()
     self.itemslist = {}
