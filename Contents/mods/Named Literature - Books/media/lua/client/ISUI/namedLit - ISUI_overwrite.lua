@@ -76,7 +76,7 @@ end
 
 
 local ISToolTipInv_render = ISToolTipInv.render
-function ISToolTipInv.render(self)
+function ISToolTipInv:render()
     if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
         local itemObj = self.item
         if namedLit.StackableTypes[itemObj:getFullType()] then
