@@ -8,6 +8,7 @@ local crossRefMods = {
     ["CatsReadMod"]="ReadFasterWhenSitting",
     ["CatsReadMod(slower)"]="ReadFasterWhenSitting",
     ["SnakeUtilsPack"]="tooltip",
+    ["Worse Searching"]="ISUI/Worse_PASearch_RefreshContainer_ISInventoryPage",
 }
 local activeMods = {}
 local activeModIDs = getActivatedMods()
