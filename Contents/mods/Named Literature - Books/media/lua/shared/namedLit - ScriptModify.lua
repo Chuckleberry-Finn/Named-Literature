@@ -1,3 +1,5 @@
+require "namedLit -- Main"
+
 namedLitStats = {}
 local function modifyLitScript()
     for type,_ in pairs(namedLit.StackableTypes) do
