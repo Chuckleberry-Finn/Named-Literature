@@ -1,0 +1,13 @@
+VERSION = 1,
+
+option NamedLiterature.TimeToForget
+{type = integer, min = 0, max = 1000000, default = 26280, page = NamedLiterature, translation = NamedLiteratureTimeToForget,}
+
+option NamedLiterature.MaxTimesReadable
+{type = integer, min = 1, max = 100, default = 3, page = NamedLiterature, translation = NamedLiteratureMaxTimesReadable,}
+
+option NamedLiterature.CanReadPassedMax
+{type = boolean, default = true, page = NamedLiterature, translation = NamedLiteratureCanReadPassedMax,}
+
+
+

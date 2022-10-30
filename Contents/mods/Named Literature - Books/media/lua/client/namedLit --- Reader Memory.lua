@@ -5,6 +5,14 @@ namedLit.readerMemory = {}
 namedLit.readerMemory.timeToForget = 26280 --6 months
 namedLit.readerMemory.maxTimesReadable = 3
 
+function namedLit.readerMemory.getTimeToForget()
+    return SandboxVars.NamedLiterature.TimeToForget or namedLit.readerMemory.timeToForget
+end
+
+function namedLit.readerMemory.getMaxTimesReadable()
+    return SandboxVars.NamedLiterature.MaxTimesReadable or namedLit.readerMemory.maxTimesReadable
+end
+
 
 ---@param player IsoPlayer|IsoGameCharacter|IsoMovingObject|IsoObject
 function namedLit.readerMemory.getOrSetReaderID(player)
@@ -25,7 +33,7 @@ function namedLit.readerMemory.statsImpact(literature,title,player)
     local currentTimeStampsLen = 0
     if title then
         local specificBook = namedLit.readerMemory.getSpecificBook(title,player)
-        currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable, #specificBook.timesStampsWhenRead)
+        currentTimeStampsLen = math.min(namedLit.readerMemory.getMaxTimesReadable(), #specificBook.timesStampsWhenRead)
     else
         local bookNameLitInfo = literature:getModData()["namedLit"]
         local playerReaderID = namedLit.readerMemory.getOrSetReaderID(player)
@@ -37,19 +45,21 @@ function namedLit.readerMemory.statsImpact(literature,title,player)
             local readTimes = readerMemory.timesStampsWhenRead
             if readTimes then
                 namedLit.readerMemory.validateSpecificReadTimes(nil,readTimes,player)
-                currentTimeStampsLen = math.min(namedLit.readerMemory.maxTimesReadable,#readerMemory.timesStampsWhenRead)
+                currentTimeStampsLen = math.min(namedLit.readerMemory.getMaxTimesReadable(),#readerMemory.timesStampsWhenRead)
             end
         end
     end
 
     local divisor = (2^currentTimeStampsLen)+currentTimeStampsLen
-    local literatureStats = namedLitStats[literature:getType()]
+    local literatureStats = namedLit.Stats[literature:getType()]
 
     local UnhappyChange = 0
     local StressChange = 0
     local BoredomChange = 0
 
-    if literatureStats then
+    local canRead = SandboxVars.NamedLiterature.CanReadPassedMax or (currentTimeStampsLen < namedLit.readerMemory.getMaxTimesReadable())
+
+    if literatureStats and canRead then
         if literatureStats.UnhappyChange then
             UnhappyChange = math.floor(literatureStats.UnhappyChange/divisor)
         end
@@ -114,7 +124,7 @@ function namedLit.readerMemory.validateSpecificReadTimes(title,directTimesRead,p
 
     local validatedTimesRead = {}
     for _,timeStamp in pairs(specificBookTimeStampsWhenRead) do
-        if timeStamp+namedLit.readerMemory.timeToForget < getGametimeTimestamp() then
+        if timeStamp+namedLit.readerMemory.getTimeToForget() < getGametimeTimestamp() then
             table.insert(validatedTimesRead, timeStamp)
         end
     end
@@ -145,7 +155,7 @@ function namedLit.readerMemory.addReadTime(book,title,player)
 
     table.insert(specificBookTSWR, getGametimeTimestamp())
 
-    while #specificBookTSWR > namedLit.readerMemory.maxTimesReadable do
+    while #specificBookTSWR > namedLit.readerMemory.getMaxTimesReadable() do
         table.remove(specificBookTSWR, 1)
     end
 end

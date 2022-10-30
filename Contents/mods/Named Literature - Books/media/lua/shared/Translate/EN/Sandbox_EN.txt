@@ -1,0 +1,14 @@
+Sandbox_EN = {
+
+	Sandbox_NamedLiterature = "Named Literature",
+
+	Sandbox_NamedLiteratureMaxTimesReadable = "Max Times Literature Can Be Read",
+	Sandbox_NamedLiteratureMaxTimesReadable_tooltip = "The amount of times each piece of literature can be read. This number divides the bonuses given from reading.",
+
+	Sandbox_NamedLiteratureCanReadPassedMax = "Can Read Passed Max Times Readable",
+    Sandbox_NamedLiteratureCanReadPassedMax_tooltip = "If true, diminished bonus from reading stay at a capped amount. If false, the bonuses are 0.",
+
+	Sandbox_NamedLiteratureTimeToForget = "Cooldown For Re-Readability",
+	Sandbox_NamedLiteratureTimeToForget_tooltip = "The amount of 10 minute intervals needed for a return of bonuses when reading.",
+
+	}
