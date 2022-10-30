@@ -131,18 +131,19 @@ function ISToolTipInv:render()
 
                 local UnhappyChange, StressChange, BoredomChange = namedLit.readerMemory.statsImpact(itemObj, title, player)
                 local UnhappyChangeText, StressChangeText, BoredomChangeText
+                local literatureStats = namedLit.Stats[itemObj:getType()]
 
-                if BoredomChange ~= 0 then
+                if BoredomChange and literatureStats.BoredomChange and literatureStats.BoredomChange ~= 0 then
                     BoredomChangeText = getText("Tooltip_literature_Boredom_Reduction")..": "
                     textWidth = math.max(getTextManager():MeasureStringX(fontType, BoredomChangeText..BoredomChange),textWidth)
                     height = height+lineHeight
                 end
-                if StressChange ~= 0 then
+                if StressChange and literatureStats.StressChange and literatureStats.StressChange ~= 0 then
                     StressChangeText = getText("Tooltip_literature_Stress_Reduction")..": "
                     textWidth = math.max(getTextManager():MeasureStringX(fontType, StressChangeText..StressChange),textWidth)
                     height = height+lineHeight
                 end
-                if UnhappyChange ~= 0 then
+                if UnhappyChange and literatureStats.UnhappyChange and literatureStats.UnhappyChange ~= 0 then
                     UnhappyChangeText = getText("Tooltip_food_Unhappiness")..": "
                     textWidth = math.max(getTextManager():MeasureStringX(fontType, UnhappyChangeText..UnhappyChange),textWidth)
                     height = height+lineHeight
@@ -194,13 +195,13 @@ function ISToolTipInv:render()
                     self:drawText(BoredomChangeText, x+1, y, fntColor.default.r, fntColor.default.g, fntColor.default.b, fntColor.default.a, fontType)
                     self:drawTextRight(tostring(BoredomChange), textWidth+gap, y, color.r, color.g, color.b, color.a, fontType)
                 end
-                if StressChange ~= 0 then
+                if StressChangeText then
                     y = y+lineHeight
                     if StressChange < 0 then color = fntColor.green else color = fntColor.red end
                     self:drawText(StressChangeText, x+1, y, fntColor.default.r, fntColor.default.g, fntColor.default.b, fntColor.default.a, fontType)
                     self:drawTextRight(tostring(StressChange), textWidth+gap, y, color.r, color.g, color.b, color.a, fontType)
                 end
-                if UnhappyChange ~= 0 then
+                if UnhappyChangeText then
                     y = y+lineHeight
                     if UnhappyChange < 0 then color = fntColor.green else color = fntColor.red end
                     self:drawText(UnhappyChangeText, x+1, y, fntColor.default.r, fntColor.default.g, fntColor.default.b, fntColor.default.a, fontType)
