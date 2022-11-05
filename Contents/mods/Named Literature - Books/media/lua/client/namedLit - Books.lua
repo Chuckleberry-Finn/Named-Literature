@@ -1,6 +1,6 @@
 require "namedLit -- Main"
 
-namedLit.YEARS = {
+namedLit.BOOKS_YEARS = {
 	["1993"]=50,["1992"]=45,["1991"]=40,["1990"]=35,
 	["1989"]=30,["1988"]=25,["1987"]=20,["1986"]=25,["1985"]=20,
 	["1984"]=15,["1983"]=13,["1982"]=12,["1981"]=11,["1980"]=10,
@@ -15,12 +15,12 @@ namedLit.YEARS = {
 	["the 7th century"]=1,["the 6th century"]=1,["the 5th century"]=1,["the 4th century"]=1,
 	}
 
-namedLit.YEARS_weighted = false
-if not namedLit.YEARS_weighted then
-	namedLit.YEARS_weighted = {}
-	for year,weight in pairs(namedLit.YEARS) do
+namedLit.BOOKS_YEARS_weighted = false
+if not namedLit.BOOKS_YEARS_weighted then
+	namedLit.BOOKS_YEARS_weighted = {}
+	for year,weight in pairs(namedLit.BOOKS_YEARS) do
 		for i=1, weight do
-			table.insert(namedLit.YEARS_weighted,year)
+			table.insert(namedLit.BOOKS_YEARS_weighted,year)
 		end
 	end
 end
@@ -3237,13 +3237,13 @@ function namedLit.getLitInfoBook()
 	local author
 	local year
 
-	--namedLit.YEARS_weighted not set properly
-	if type(namedLit.YEARS_weighted) ~= "table" then
-		print("ERR: namedLit: namedLit.YEARS_weighted not initialized")
+	--namedLit.BOOKS_YEARS_weighted not set properly
+	if type(namedLit.BOOKS_YEARS_weighted) ~= "table" then
+		print("ERR: namedLit: namedLit.BOOKS_YEARS_weighted not initialized")
 		return
 	end
 
-	local randomYearFromWeighted = namedLit.YEARS_weighted[ZombRand(#namedLit.YEARS_weighted)+1]
+	local randomYearFromWeighted = namedLit.BOOKS_YEARS_weighted[ZombRand(#namedLit.BOOKS_YEARS_weighted)+1]
 	local titlesToChooseFrom = namedLit.BOOKS_weighted[randomYearFromWeighted]
 
 	title = titlesToChooseFrom[ZombRand(#titlesToChooseFrom)+1]
