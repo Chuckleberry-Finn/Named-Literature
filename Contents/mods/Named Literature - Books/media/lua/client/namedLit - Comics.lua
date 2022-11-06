@@ -61,7 +61,7 @@ namedLit.COMICS = {
     ["1990"] = { "Legends of the Dark Knight", "Batman", "Spider-Man", },
     ["1989"] = { "Uncanny X-Men", "Batman", "Legends of the Dark Knight", },
     ["1988"] = { "Uncanny X-Men", "Batman: The Killing Joke", "Marvel Comics Presents", "Excalibur", "Wolverine", },
-    ["1987"] = { "Uncanny X-Men", "Punisher", "Amazing Spider-Man Annual (covers combined)", },
+    ["1987"] = { "Uncanny X-Men", "Punisher", "Amazing Spider-Man Annual", },
     ["1986"] = { "X-Factor", "Uncanny X-Men", "Classic X-Men", "The Man of Steel", "Superman Vol. 2", },
     ["1985"] = { "Uncanny X-Men", "Secret Wars II", "X-Factor", },
     ["1984"] = { "Marvel Super Heroes Secret Wars", },
@@ -69,22 +69,22 @@ namedLit.COMICS = {
 
 namedLit.showType.ComicBook = true
 
-
 namedLit.COMICS_weighted = false
+
 namedLit.COMICS_iconIDs = {}
+for _,title in pairs(namedLit.COMICS) do
+    namedLit.COMICS_iconIDs[title] = namedLit.stringToIconID(title)
+end
 
 if not namedLit.COMICS_weighted then
     namedLit.COMICS_weighted = {}
-
     --[DEBUG]] local debugText, totalTitles = "\nDEBUG: namedLit:", 0
-
-    for year,titles in pairs(namedLit.BOOKS) do
+    for year,titles in pairs(namedLit.COMICS) do
         namedLit.COMICS_weighted[year] = {}
         --[DEBUG]] debugText, totalTitles = debugText.."\n"..year.."  n of titles:"..(#titles/2), totalTitles+(#titles/2)
-        for i=1, #titles, 2 do
+        for i=1, #titles, 1 do
             local title = titles[i]
-            namedLit.BOOKS_keyedToAuthor[title] = titles[i+1]
-            namedLit.BOOKS_iconIDs[title] = namedLit.stringToIconID(title, 2)
+            namedLit.COMICS_iconIDs[title] = namedLit.stringToIconID(title)
 
             local weight = 0
             for ii=1, (#titles-(i-1)) do
@@ -98,63 +98,36 @@ if not namedLit.COMICS_weighted then
 end
 
 
-function namedLit.getLitInfoBook()
+function namedLit.getLitInfoComicBook()
     local title
     local author
     local year
 
     --namedLit.BOOKS_YEARS_weighted not set properly
-    if type(namedLit.BOOKS_YEARS_weighted) ~= "table" then
-        print("ERR: namedLit: namedLit.BOOKS_YEARS_weighted not initialized")
+    if type(namedLit.COMICS_YEARS_weighted) ~= "table" then
+        print("ERR: namedLit: namedLit.COMICS_YEARS_weighted not initialized")
         return
     end
 
-    local randomYearFromWeighted = namedLit.BOOKS_YEARS_weighted[ZombRand(#namedLit.BOOKS_YEARS_weighted)+1]
-    local titlesToChooseFrom = namedLit.BOOKS_weighted[randomYearFromWeighted]
+    local randomYearFromWeighted = namedLit.COMICS_YEARS_weighted[ZombRand(#namedLit.COMICS_YEARS_weighted)+1]
+    local titlesToChooseFrom = namedLit.COMICS_weighted[randomYearFromWeighted]
 
     title = titlesToChooseFrom[ZombRand(#titlesToChooseFrom)+1]
-    author = namedLit.BOOKS_keyedToAuthor[title]
+    --author = namedLit.BOOKS_keyedToAuthor[title]
     year = randomYearFromWeighted
 
     return title, author, year
 end
 
 
----@param literature IsoObject|InventoryItem|Literature
-function namedLit.applyTextureBook(literature, title)
-    --[DEBUG]] print("DEBUG: namedLit: "..title)
-    local titleTextureID = namedLit.BOOKS_iconIDs[title]
-    if titleTextureID then
-        --[DEBUG]] print("-- titleTextureID:"..titleTextureID)
-        local itemTexture = getTexture("media/textures/item/namedLitBook"..titleTextureID..".png")
-        if itemTexture then
-            --[DEBUG]] print("-- itemTexture:"..tostring(itemTexture))
-            literature:setTexture(itemTexture)
-        end
-    end
-
-end
-
-
-
-function namedLit.getLitInfoComic()
-    local title = namedLit.COMICS[ZombRand(#namedLit.COMICS)+1]
-    return title
-end
-
-namedLit.COMICS_iconIDs = {}
-for _,title in pairs(namedLit.COMICS) do
-    namedLit.COMICS_iconIDs[title] = namedLit.stringToIconID(title)
-end
-
 --[[
 ---@param literature IsoObject|InventoryItem|Literature
-function namedLit.applyTextureComic(literature, title)
-    --[DEBUG] print("DEBUG: namedLit: applyTextureComic: "..title)
+function namedLit.applyTextureComicBook(literature, title)
+    --[DEBUG] print("DEBUG: namedLit: applyTextureComicBook: "..title)
     local titleTextureID = namedLit.COMICS_iconIDs[title]
     if titleTextureID then
         --[DEBUG] print("-- titleTextureID:"..titleTextureID)
-        local itemTexture = getTexture("media/textures/item/namedLitComic"..titleTextureID..".png")
+        local itemTexture = getTexture("media/textures/item/namedLitComicBook"..titleTextureID..".png")
         if itemTexture then
             --[DEBUG] print("-- itemTexture:"..tostring(itemTexture))
             literature:setTexture(itemTexture)
@@ -162,5 +135,3 @@ function namedLit.applyTextureComic(literature, title)
     end
 end
 --]]
-
-
