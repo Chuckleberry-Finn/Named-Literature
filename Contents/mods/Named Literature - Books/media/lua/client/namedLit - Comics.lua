@@ -72,9 +72,6 @@ namedLit.showType.ComicBook = true
 namedLit.COMICS_weighted = false
 
 namedLit.COMICS_iconIDs = {}
-for _,title in pairs(namedLit.COMICS) do
-    namedLit.COMICS_iconIDs[title] = namedLit.stringToIconID(title)
-end
 
 if not namedLit.COMICS_weighted then
     namedLit.COMICS_weighted = {}
@@ -120,7 +117,7 @@ function namedLit.getLitInfoComicBook()
 end
 
 
---[[
+
 ---@param literature IsoObject|InventoryItem|Literature
 function namedLit.applyTextureComicBook(literature, title)
     --[DEBUG] print("DEBUG: namedLit: applyTextureComicBook: "..title)
@@ -134,4 +131,3 @@ function namedLit.applyTextureComicBook(literature, title)
         end
     end
 end
---]]
