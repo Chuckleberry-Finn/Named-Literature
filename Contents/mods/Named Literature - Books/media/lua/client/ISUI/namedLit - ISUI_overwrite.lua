@@ -150,7 +150,7 @@ function ISToolTipInv:render()
                 end
                 height = height+lineHeight
 
-                local journalTooltipWidth = math.max(self.tooltip:getWidth(),textWidth)+fontBounds[font]
+                local journalTooltipWidth = math.max(self.tooltip:getWidth(),textWidth)+fontBounds[font]+8
                 ISToolTipInv_render_Override(self,journalTooltipWidth)
 
                 self:setX(self.tooltip:getX() - 11)
