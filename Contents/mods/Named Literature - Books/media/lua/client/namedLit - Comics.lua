@@ -23,7 +23,7 @@ namedLit.COMICS = {
                 "Secret Defenders", "Shaman's Tears", "The Maxx", "Youngblood Yearbook", "Deathmate Epilogue", "Infinity Crusade", "Gambit", "Prophet", "Hellstorm",
                 "Youngblood: Battlezone", "Second Life of Doctor Mirage", "Uncanny X_Men", "Ninjak", "Fantastic Four", "Deadpool", "Thunderstrike", "Deathblow",
                 "Team Youngblood", "Detective Comics", "Image Swimsuit Special", "Supreme", "WildC.A.T.S.", "Legacy of Superman", "Catwoman", "Punisher 2099",
-                "Spider-Man 2099", "2099 Unlimited", "Venom: The Madness", "Youngblood : Strike File", "Supemran", "Uncanny X-Men Annual", "1963: The Fury", "Spider-Man",
+                "Spider-Man 2099", "2099 Unlimited", "Venom: The Madness", "Youngblood : Strike File", "Uncanny X-Men Annual", "1963: The Fury", "Spider-Man",
                 "Silver Surfer/Warlock: Ressurection", "Superpatriot", "Bloodshot", "WildC.A.T.S. Sourcebook", "Aliens vs. Predator: Deadlies of the Species",
                 "Avengers", "Trencher", "Iron Man", "Death: High Cost of Living", "Showcase 93", "H.A.R.D. Corps", "Arcadia Week One: X", "Solar, Man of the Atom",
                 "Robin", "Harbinger", "X-Men Annual", "Vanguard", "Shadowhawk III", "Darkhawk", "Wild Thing", "Eternal Warrior", "Superman: The Man of Steel Annual",
