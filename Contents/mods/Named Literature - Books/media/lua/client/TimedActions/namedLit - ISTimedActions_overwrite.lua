@@ -18,7 +18,7 @@ function ISReadABook:perform()
 
         if canRead then
             if getDebug() then print("NamedLit: StressChange:"..StressChange.." UnhappyChange: "..UnhappyChange.." BoredomChange:"..BoredomChange) end
-            stats:setStress(math.max(0,stats:getStress()+StressChange))
+            stats:setStress(math.max(0,stats:getStress()+StressChange)/100)
             bodyDamage:setUnhappynessLevel(math.max(0,bodyDamage:getUnhappynessLevel()+UnhappyChange))
             bodyDamage:setBoredomLevel(math.max(0,bodyDamage:getBoredomLevel()+BoredomChange))
         end
