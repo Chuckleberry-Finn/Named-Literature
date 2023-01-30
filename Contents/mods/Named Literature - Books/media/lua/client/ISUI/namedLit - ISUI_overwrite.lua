@@ -3,31 +3,105 @@ require "ISUI/ISInventoryPane"
 require "namedLit -- Main"
 require "namedLit --- Reader Memory"
 
-local crossRefMods = {
+local NLISUI = NLISUI or {}
+
+NLISUI.ISToolTipInv = NLISUI.ISToolTipInv or {}
+
+NLISUI.crossRefMods = {
     ["CatsWalkWhileReadMod"]="ReadFasterWhenSitting",
     ["CatsReadMod"]="ReadFasterWhenSitting",
     ["CatsReadMod(slower)"]="ReadFasterWhenSitting",
     ["SnakeUtilsPack"]="tooltip",
     ["Worse Searching"]="ISUI/Worse_PASearch_RefreshContainer_ISInventoryPage",
 }
-local activeMods = {}
-local activeModIDs = getActivatedMods()
-for i=1, activeModIDs:size() do
-    local modID = activeModIDs:get(i-1)
-    if crossRefMods[modID] and not activeMods[modID] then
-        require (crossRefMods[modID])
-        activeMods[modID] = true
+NLISUI.activeMods = {}
+NLISUI.activeModIDs = getActivatedMods()
+for i=1, NLISUI.activeModIDs:size() do
+    local modID = NLISUI.activeModIDs:get(i-1)
+    if NLISUI.crossRefMods[modID] and not NLISUI.activeMods[modID] then
+        require (NLISUI.crossRefMods[modID])
+        NLISUI.activeMods[modID] = true
     end
 end
 
+NLISUI.fontDict = { ["Small"] = UIFont.NewSmall, ["Medium"] = UIFont.NewMedium, ["Large"] = UIFont.NewLarge, }
+NLISUI.fontBounds = { ["Small"] = 28, ["Medium"] = 32, ["Large"] = 42, }
 
+function ISToolTipInv:wookieeFix()
+    
+    if WGS then
 
+        if WGS.mod.options.moveInventoryTooltips and not self.followMouse then
 
-local fontDict = { ["Small"] = UIFont.NewSmall, ["Medium"] = UIFont.NewMedium, ["Large"] = UIFont.NewLarge, }
-local fontBounds = { ["Small"] = 28, ["Medium"] = 32, ["Large"] = 42, }
+            if WGS.mod.options.tooltipPositionStyle == WGS.abovePanels then
 
+                if self.tooltip:getX() > (getCore():getScreenWidth() / 2) then 
+                    self.tooltip:setX(getCore():getScreenWidth() -  self:getWidth() - 70)
+                    self:setX(getCore():getScreenWidth() -  self:getWidth() - 70)
+                else
+                    self.tooltip:setX(70)
+                    self:setX(70)
+                end
 
-local function ISToolTipInv_render_Override(self,hardSetWidth)
+            else -- WGS.mod.options.tooltipPositionStyle == WGS.besidePanels
+
+                local playerIndex = self.owner.player
+
+                if self.owner.parent:getUIName():find("inventory") ~= nil then
+
+                    local inventory = getPlayerInventory(playerIndex)
+
+                    if not inventory then return end
+    
+                    local xInventory = inventory:getX()
+                    local yInventory = inventory:getY()
+                    local width = inventory:getWidth()
+    
+                    if xInventory < getCore():getScreenWidth() / 2 then
+                        self.tooltip:setY(yInventory)
+                        self:setY(yInventory)
+                        self.tooltip:setX(xInventory + width)
+                        self:setX(xInventory + width)
+                    else
+                        self.tooltip:setY(yInventory)
+                        self:setY(yInventory)
+                        self.tooltip:setX(xInventory - self:getWidth())
+                        self:setX(xInventory - self:getWidth())
+                    end
+
+                elseif self.owner.parent:getUIName():find("loot") ~= nil then
+
+                    local loot = getPlayerLoot(playerIndex)
+
+                    if not loot then return end
+
+                    local xLoot = loot:getX()
+                    local yLoot = loot:getY()
+                    local width = loot:getWidth()
+                    
+                    if xLoot < getCore():getScreenWidth() / 2 then
+                        self.tooltip:setY(yLoot)
+                        self:setY(yLoot)
+                        self.tooltip:setX(xLoot + width)
+                        self:setX(xLoot + width)
+                    else
+                        self.tooltip:setY(yLoot)
+                        self:setY(yLoot)
+                        self.tooltip:setX(xLoot - self:getWidth())
+                        self:setX(xLoot - self:getWidth())
+                    end
+
+                end
+
+            end
+        
+        end
+
+    end
+
+end
+
+NLISUI.ISToolTipInv.renderOverride = function(self,hardSetWidth)
     if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
         local mx = getMouseX() + 24
         local my = getMouseY() + 24
@@ -36,16 +110,9 @@ local function ISToolTipInv_render_Override(self,hardSetWidth)
             my = self:getY()
             if self.anchorBottomLeft then
                 mx = self.anchorBottomLeft.x
-                my = self.anchorBottomLeft.y
+                my = self.anchorBottomLeft.y - self.height + 4
             end
         end
-
-        self.tooltip:setX(mx+11)
-        self.tooltip:setY(my)
-        self.tooltip:setWidth(50)
-        self.tooltip:setMeasureOnly(true)
-        self.item:DoTooltip(self.tooltip)
-        self.tooltip:setMeasureOnly(false)
 
         local myCore = getCore()
         local maxX = myCore:getScreenWidth()
@@ -53,14 +120,27 @@ local function ISToolTipInv_render_Override(self,hardSetWidth)
         local tw = self.tooltip:getWidth()
         local th = self.tooltip:getHeight()
 
-        self.tooltip:setX(math.max(0, math.min(mx + 11, maxX - tw - 1)))
+
+
         if not self.followMouse and self.anchorBottomLeft then
-            self.tooltip:setY(math.max(0, math.min(my - th, maxY - th - 1)))
+            self.tooltip:setY(math.max(0, math.min(my - (2 * th) - 10, maxY - th - 1)))
         else
-            self.tooltip:setY(math.max(0, math.min(my, maxY - th - 1)))
+            if not (WGS and WGS.mod.options.moveInventoryTooltips) then
+                self.tooltip:setX(math.max(0, math.min(mx + 11, maxX - tw - 1)))
+            end
+            if not WGS or not WGS.mod.options.moveInventoryTooltips or WGS.mod.options.tooltipPositionStyle == WGS.abovePanels then
+                self.tooltip:setY(math.max(0, math.min(my, maxY - th - 1)))
+            end
         end
 
-        self:setX(self.tooltip:getX() - 11)
+        self:wookieeFix()
+
+        if WGS and WGS.mod.options.moveInventoryTooltips and not self.followMouse then
+            self:setX(self.tooltip:getX())
+        else
+            self:setX(self.tooltip:getX() - 11)
+        end
+
         self:setY(self.tooltip:getY())
         self:setWidth(hardSetWidth or (tw + 11))
         self:setHeight(th)
@@ -73,10 +153,11 @@ local function ISToolTipInv_render_Override(self,hardSetWidth)
         self:drawRectBorder(0, 0, self.width, self.height, self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
         self.item:DoTooltip(self.tooltip)
     end
+
 end
 
+NLISUI.ISToolTipInv.render = ISToolTipInv.render
 
-local ISToolTipInv_render = ISToolTipInv.render
 function ISToolTipInv:render()
     if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
         local itemObj = self.item
@@ -85,7 +166,7 @@ function ISToolTipInv:render()
             if bookNameLitInfo then
 
                 local font = getCore():getOptionTooltipFont()
-                local fontType = fontDict[font] or UIFont.Medium
+                local fontType = NLISUI.fontDict[font] or UIFont.Medium
                 local textWidth = 0
                 local lineHeight = getTextManager():getFontFromEnum(fontType):getLineHeight()
 
@@ -150,10 +231,9 @@ function ISToolTipInv:render()
                 end
                 height = height+lineHeight
 
-                local journalTooltipWidth = math.max(self.tooltip:getWidth(),textWidth)+fontBounds[font]+8
-                ISToolTipInv_render_Override(self,journalTooltipWidth)
+                local journalTooltipWidth = math.max(self.tooltip:getWidth(),textWidth)+NLISUI.fontBounds[font]+8
+                NLISUI.ISToolTipInv.renderOverride(self,journalTooltipWidth)
 
-                self:setX(self.tooltip:getX() - 11)
                 if self.x > 1 and self.y > 1 then
                     local bgColor = self.backgroundColor
                     local bdrColor = self.borderColor
@@ -188,7 +268,7 @@ function ISToolTipInv:render()
                 end
 
                 local color = fntColor.default
-                local gap = fontBounds[font]
+                local gap = NLISUI.fontBounds[font]
                 if BoredomChangeText then
                     y = y+lineHeight
                     if BoredomChange < 0 then color = fntColor.green else color = fntColor.red end
@@ -210,7 +290,7 @@ function ISToolTipInv:render()
 
             end
         else
-            ISToolTipInv_render(self)
+            NLISUI.ISToolTipInv.render(self)
         end
     end
 end
@@ -391,7 +471,7 @@ function ISInventoryPane:refreshContainer()
 end
 
 
-if activeMods["Worse Searching"] then
+if NLISUI.activeMods["Worse Searching"] then
     local old_searched_ISInventoryPane_refreshContainer = ISInventoryPane.refreshContainer
 
     function ISInventoryPane:refreshContainer()
