@@ -3,7 +3,7 @@ require "ISUI/ISInventoryPane"
 require "namedLit -- Main"
 require "namedLit --- Reader Memory"
 
-local NLISUI = NLISUI or {}
+local NLISUI = {}
 
 NLISUI.ISToolTipInv = NLISUI.ISToolTipInv or {}
 
@@ -903,3 +903,5 @@ function ISInventoryPane:renderdetails(doDragged)
     end
 
 end
+
+return NLISUI
