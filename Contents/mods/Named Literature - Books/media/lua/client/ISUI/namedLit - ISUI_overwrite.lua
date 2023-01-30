@@ -101,7 +101,8 @@ function ISToolTipInv:wookieeFix()
 
 end
 
-NLISUI.ISToolTipInv.renderOverride = function(self,hardSetWidth)
+function ISToolTipInv:renderNamedLiterature(hardSetWidth)
+
     if not ISContextMenu.instance or not ISContextMenu.instance.visibleCheck then
         local mx = getMouseX() + 24
         local my = getMouseY() + 24
@@ -110,7 +111,7 @@ NLISUI.ISToolTipInv.renderOverride = function(self,hardSetWidth)
             my = self:getY()
             if self.anchorBottomLeft then
                 mx = self.anchorBottomLeft.x
-                my = self.anchorBottomLeft.y - self.height + 4
+                my = self.anchorBottomLeft.y - self.height + 1
             end
         end
 
@@ -119,18 +120,13 @@ NLISUI.ISToolTipInv.renderOverride = function(self,hardSetWidth)
         local maxY = myCore:getScreenHeight()
         local tw = self.tooltip:getWidth()
         local th = self.tooltip:getHeight()
-
-
-
+        
+        self.tooltip:setX(math.max(0, math.min(mx + 11, maxX - tw - 1)))
+        
         if not self.followMouse and self.anchorBottomLeft then
-            self.tooltip:setY(math.max(0, math.min(my - (2 * th) - 10, maxY - th - 1)))
+            self.tooltip:setY(math.max(0, math.min(my - self.namedLitTooltipHeight + 1, maxY - th - 1)))
         else
-            if not (WGS and WGS.mod.options.moveInventoryTooltips) then
-                self.tooltip:setX(math.max(0, math.min(mx + 11, maxX - tw - 1)))
-            end
-            if not WGS or not WGS.mod.options.moveInventoryTooltips or WGS.mod.options.tooltipPositionStyle == WGS.abovePanels then
-                self.tooltip:setY(math.max(0, math.min(my, maxY - th - 1)))
-            end
+            self.tooltip:setY(math.max(0, math.min(my, maxY - th - 1)))
         end
 
         self:wookieeFix()
@@ -231,8 +227,11 @@ function ISToolTipInv:render()
                 end
                 height = height+lineHeight
 
+                self.namedLitTooltipHeight = height
+
                 local journalTooltipWidth = math.max(self.tooltip:getWidth(),textWidth)+NLISUI.fontBounds[font]+8
-                NLISUI.ISToolTipInv.renderOverride(self,journalTooltipWidth)
+                
+                self:renderNamedLiterature(journalTooltipWidth)
 
                 if self.x > 1 and self.y > 1 then
                     local bgColor = self.backgroundColor
