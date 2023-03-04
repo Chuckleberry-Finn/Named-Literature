@@ -1,6 +1,7 @@
 require "namedLit -- Main"
 
 namedLit.BOOKS_YEARS = {
+	["overwrites"]=25,
 	["1993"]=50,["1992"]=45,["1991"]=40,["1990"]=35,
 	["1989"]=30,["1988"]=25,["1987"]=20,["1986"]=25,["1985"]=20,
 	["1984"]=15,["1983"]=13,["1982"]=12,["1981"]=11,["1980"]=10,
@@ -26,6 +27,11 @@ if not namedLit.BOOKS_YEARS_weighted then
 end
 
 namedLit.BOOKS = {
+
+	["overwrites"] = {
+		"The Holy Bible", "God",
+	},
+
 
 	["1993"] = {
 		"The Giver (The Giver, #1)", "Lois Lowry",
@@ -3248,7 +3254,7 @@ function namedLit.getLitInfoBook()
 
 	title = titlesToChooseFrom[ZombRand(#titlesToChooseFrom)+1]
 	author = namedLit.BOOKS_keyedToAuthor[title]
-	year = randomYearFromWeighted
+	if randomYearFromWeighted ~= "overwrites" then year = randomYearFromWeighted end
 
 	return title, author, year
 end
