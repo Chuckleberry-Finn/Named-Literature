@@ -132,8 +132,8 @@ function namedLiteratureContainerScan(ItemContainer)
     end
 end
 
----@param ItemContainer ItemContainer
-function namedLiteratureOnFillContainer(_, _, ItemContainer)
-    namedLiteratureContainerScan(ItemContainer)
-end
-Events.OnFillContainer.Add(namedLiteratureOnFillContainer)
+function namedLit.applyToInventory(ISInventoryPage, step) namedLiteratureContainerScan(ISInventoryPage.inventory) end
+Events.OnRefreshInventoryWindowContainers.Add(namedLit.applyToInventory)
+
+function namedLit.applyToFillContainer(contName, contType, container) namedLiteratureContainerScan(container) end
+Events.OnFillContainer.Add(namedLit.applyToFillContainer)
