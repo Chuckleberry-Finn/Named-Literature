@@ -1,9 +1,10 @@
 version=1
 id=2822983942
 title=Named Literature
-description=[img]https://i.imgur.com/p7Fv1Z6.gif[/img]
-description=
 description=[h3]More flavor text and functionality for literature items found in game.[/h3]
+description=
+description=[url=https://ko-fi.com/chuckleberryfinn][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/kofi.png[/img][/url] [url=https://www.patreon.com/bePatron?u=17239488][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/patreon.png[/img][/url]
+description=
 description=
 description=[h3][b]This mod does not use item scripts. Everything is lua based.[/b][/h3]
 description=Applied to: Books, Magazines, HottieZs, TVMagazines, Comic-Books, Newspapers, Wordsearches, Crosswords.
@@ -27,6 +28,6 @@ description=
 description=[b]*[/b]Please report any issues especially with items stacking strangely.
 description=[/list]
 description=
-description=[url=https://ko-fi.com/chuckleberryfinn][img]https://i.imgur.com/GxZ38nz.png[/img] [b]Consider supporting Chuck![/b][/url] [url=https://www.patreon.com/bePatron?u=17239488][img]https://raw.githubusercontent.com/ChuckTheSheep/Vanilla-Weapons-Expanded/main/Contents/mods/VanillaWeaponsExpanded/patreon/Patreon%20Logo.png[/img][/url]
+description=[h3]Copyright 2023 Chuckleberry Finn. This item is not authorized for posting on Steam, except under the Steam account named Chuckleberry Finn.[/h3]
 tags=Build 41;Literature;Misc;Pop Culture;Realistic;Silly/Fun
 visibility=public
