@@ -308,6 +308,7 @@ function ISInventoryPane:refreshContainer()
 end
 --]]
 
+--[[
 function ISInventoryPane:refreshContainer()
     self.itemslist = {}
     self.itemindex = {}
@@ -903,5 +904,7 @@ function ISInventoryPane:renderdetails(doDragged)
     end
 
 end
+--]]
+
 
 return NLISUI
