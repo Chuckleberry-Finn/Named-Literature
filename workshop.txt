@@ -3,8 +3,8 @@ id=2822983942
 title=Named Literature
 description=[h3]More flavor text and functionality for literature items found in game.[/h3]
 description=
-description=[url=https://ko-fi.com/chuckleberryfinn][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/kofi.png[/img][/url] [url=https://www.patreon.com/bePatron?u=17239488][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/patreon.png[/img][/url]
-description=
+description=[url=https://ko-fi.com/chuckleberryfinn][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/kofi.png[/img][/url]
+description=[url=https://discord.gg/SReMnbV4V7][img]https://raw.githubusercontent.com/Chuckleberry-Finn/chuckImages/main/PZmodCommBanner1.png[/img][/url]
 description=
 description=[h3][b]This mod does not use item scripts. Everything is lua based.[/b][/h3]
 description=Applied to: Books, Magazines, HottieZs, TVMagazines, Comic-Books, Newspapers, Wordsearches, Crosswords.
