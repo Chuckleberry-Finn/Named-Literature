@@ -20,7 +20,6 @@ description=[*] Magazines utilize a similar system but just of magazine titles f
 description=
 description=[*][B]Additional Features:[/b]
 description=[list]
-description=[*] Literature items will also still stack as their default name (example: "book"). (This is done by editing [b]*[/b][i]two functions of the inventory pane[/i].)
 description=[*] Literature items can be re-read for a diminished stress/boredom/unhappiness relief. (If given enough time you can re-read for full amount.)
 description=[*] Literature items are color coded (based on a seeded process), colors should always be consistent. [b](Coloring 3D models not yet working/may not be possible.)[/b]
 description=[/list]
