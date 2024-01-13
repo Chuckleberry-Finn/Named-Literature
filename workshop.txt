@@ -3,19 +3,15 @@ id=2822983942
 title=Named Literature
 description=[h3]More flavor text and functionality for literature items found in game.[/h3]
 description=
-description=[url=https://ko-fi.com/chuckleberryfinn][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/kofi.png[/img][/url]
-description=[url=https://discord.gg/SReMnbV4V7][img]https://raw.githubusercontent.com/Chuckleberry-Finn/chuckImages/main/PZmodCommBanner1.png[/img][/url]
+description=[url=https://ko-fi.com/chuckleberryfinn][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/kofi.png[/img][/url][url=https://discord.gg/SReMnbV4V7][img]https://raw.githubusercontent.com/Chuckleberry-Finn/chuckImages/main/PZmodCommBanner3.png[/img][/url]
 description=
 description=[h3][b]This mod does not use item scripts. Everything is lua based.[/b][/h3]
 description=Applied to: Books, Magazines, HottieZs, TVMagazines, Comic-Books, Newspapers, Wordsearches, Crosswords.
 description=
 description=[list]
 description=[*] Titles are applied randomly to books from a list of over 3000+ titles.
-description=
 description=[*] The 3000+ titles are sorted by year/decade/century written, with a preference for modern (1993); include every century up to the 4th.
-description=
 description=[*] Book descriptions and tooltips will also include author and publication date for extra flavor (text).
-description=
 description=[*] Magazines utilize a similar system but just of magazine titles from a list of 60+ titles.
 description=
 description=[*][B]Additional Features:[/b]
@@ -23,9 +19,17 @@ description=[list]
 description=[*] Literature items can be re-read for a diminished stress/boredom/unhappiness relief. (If given enough time you can re-read for full amount.)
 description=[*] Literature items are color coded (based on a seeded process), colors should always be consistent. [b](Coloring 3D models not yet working/may not be possible.)[/b]
 description=[/list]
-description=
-description=[b]*[/b]Please report any issues especially with items stacking strangely.
 description=[/list]
+description=
+description=[url=https://raw.githubusercontent.com/Chuckleberry-Finn/chuckImages/main/bingo.png][img]https://raw.githubusercontent.com/Chuckleberry-Finn/chuckImages/main/readThrough.png[/img][/url]
+description=[img]https://raw.githubusercontent.com/Chuckleberry-Finn/chuckImages/main/noModPacks.png[/img]
+description=[img]https://raw.githubusercontent.com/Chuckleberry-Finn/chuckImages/main/bugHunt.png[/img]
+description=[quote][b]Windows:[/b] %userprofile%\Zomboid\console.txt[/quote]
+description=[quote][b]Mac/Linux:[/b] $User\Zomboid\console.txt[/quote]
+description=Upload this file [b]in entirety[/b] to [url=https://github.com/ChuckTheSheep/Named-Literature]Github[/url] as an issue.
+description=Share the link in a comment below if it is urgent.
+description=
+description=
 description=
 description=[h3]Copyright 2023 Chuckleberry Finn. This item is not authorized for posting on Steam, except under the Steam account named Chuckleberry Finn.[/h3]
 tags=Build 41;Literature;Misc;Pop Culture;Realistic;Silly/Fun
