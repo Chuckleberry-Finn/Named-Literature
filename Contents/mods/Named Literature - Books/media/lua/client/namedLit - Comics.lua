@@ -37,7 +37,7 @@ namedLit.COMICS = {
                  "Operation: Urban Storm", "Web of Spider-Man", "Superman: The Man of Steel", "Lobo's Back", "Predator vs. Magnus Robot Fighter",
                  "Ghost Rider: Spirits of Vengeance", "Darkhold", "Spectacular Spider-Man", "Robin III", "Eclipso: The Darkness Within", "Wolverine", "X-Factor Annual",
                  "Savage Dragon vs. the Savage Megaton Man", "Superman: Man of Steel", "Ghost Rider & Blaze: Spirits", "Adventures of Superman", "Punisher",
-                 "Marvel Comics Presents", "Action Comics", "Lobo: Infanticide", "Warlock & The Infinity Watch", "Amazing Spider-Man Anniversary", "X-Facotr",
+                 "Marvel Comics Presents", "Action Comics", "Lobo: Infanticide", "Warlock & The Infinity Watch", "Amazing Spider-Man Anniversary", "X-Factor",
                  "Death's Head II vs. Killpower: Battle Tide", "Batman: Gotham Nights", "Doctor Strange", "Lobo: Blazing Chain of Love",
                  "Green Lantern & Blaze: Spirits of Vengeance", "Nomad", "Punisher War Journal", "Next Men", "Batman: Sword of Azrael", "Robocop vs. Terminator",
                  "New Warriors", "Shadow Riders", "Fantastic Four", "Unity", "Batman vs. Predator", "Night Thrasher: Four Control", "H.A.R.D. Corps", "Deathlok",
