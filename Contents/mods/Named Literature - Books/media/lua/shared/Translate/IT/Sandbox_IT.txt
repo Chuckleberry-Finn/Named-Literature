@@ -1,4 +1,4 @@
-Sandbox_EN = {
+Sandbox_IT = {
 
     Sandbox_NamedLiterature = "Named Literature",
 

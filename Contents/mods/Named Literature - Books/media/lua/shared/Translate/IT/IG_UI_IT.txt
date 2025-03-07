@@ -1,4 +1,4 @@
-IGUI_EN = {
+IGUI_IT = {
     IGUI_namedLit_TIMEREAD = "Ho letto questo %1 volte.",
     IGUI_namedLit_TIMESREAD = "l'ho letto %1 volte.",
     IGUI_namedLit_AUTHOR = "Di %1",
