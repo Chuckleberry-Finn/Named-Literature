@@ -1,0 +1,3 @@
+ItemName_IT = {
+    ItemName_Base.HottieZ = "Giornaletto Porno",
+}

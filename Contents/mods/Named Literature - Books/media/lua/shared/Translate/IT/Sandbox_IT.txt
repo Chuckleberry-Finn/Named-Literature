@@ -1,0 +1,14 @@
+Sandbox_IT = {
+
+    Sandbox_NamedLiterature = "Named Literature",
+
+    Sandbox_NamedLiteratureMaxTimesReadable = "Numero Massimo di Volte che il libro Può Essere Letto",
+    Sandbox_NamedLiteratureMaxTimesReadable_tooltip = "Il numero di volte in cui ogni libro può essere letto. Questo numero divide i bonus ottenuti.",
+
+    Sandbox_NamedLiteratureCanReadPassedMax = "Può Essere Letto Oltre il Massimo delle Volte",
+    Sandbox_NamedLiteratureCanReadPassedMax_tooltip = "Se vero, il bonus diminuito dalla lettura rimane a un valore massimo. Se falso, i bonus sono 0.",
+
+    Sandbox_NamedLiteratureTimeToForget = "Tempo di cooldown per la Rilettura",
+    Sandbox_NamedLiteratureTimeToForget_tooltip = "Il numero di intervalli di 10 minuti necessari, per il ritorno dei bonus durante la lettura.",
+
+}
