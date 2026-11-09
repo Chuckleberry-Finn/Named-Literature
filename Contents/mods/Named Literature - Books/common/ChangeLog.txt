@@ -1,0 +1,28 @@
+[ ALERT_CONFIG ]
+link1 = Chuck's Kofi = https://steamcommunity.com/linkfilter/?u=https://ko-fi.com/chuckleberryfinn,
+link2 = Workshop = https://steamcommunity.com/id/Chuckleberry_Finn/myworkshopfiles/?appid=108600,
+link3 = Github = https://steamcommunity.com/linkfilter/?u=https://github.com/Chuckleberry-Finn/Named-Literature,
+[ ------ ]
+
+[ 11/8/26 ]
+B42 Overhaul:
+
+- Mod titles appear alongside vanilla's, weighted by the size of each title pool (can be disabled in sandbox options).
+-- Titles are classified by genre (like vanilla)
+- Magazine titles are now tagged by subject and spread across B42's magazine types (popular, business, science, etc.)
+- Book names now include the author, matching vanilla's format; publication date shows in the tooltip for extra flavor.
+-- Magazines and nude magazines now keep vanilla's issue month and year.
+-- Nude magazine titles now follow vanilla's HottieZ/HunkZ roll.
+-- Retail comic books now use titles from 1993.
+- Literature colors now use vanilla's cover variants where available, so 3D models match.
+- Added paperback icons, paperbacks now use their own color-coded icons.
+- Translations moved to B42's JSON format.
+
+- Fix: Icon colors are now spread evenly, previously a few colors were picked far more than the rest.
+- Fix: Replaced the 17th century book list (was a duplicate of the 1900s list) with actual 17th century works.
+- Fix: Male nude magazine icons were not loading.
+
+- Removed re-read tracking and its sandbox options, vanilla's Literature Cooldown now handles this.
+- Removed the custom tooltip in favor of vanilla's.
+- Removed TV magazine, newspaper, crossword, and wordsearch handling, vanilla names these now.
+[ ------ ]

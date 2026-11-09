@@ -1,0 +1,5 @@
+{
+    "Sandbox_NamedLiterature": "Named Literature",
+    "Sandbox_NamedLiteratureVanillaTitles": "Mix In Vanilla Titles",
+    "Sandbox_NamedLiteratureVanillaTitles_tooltip": "If true, vanilla titles can still appear alongside Named Literature's titles, weighted by the size of each title pool. If false, only Named Literature's titles are used."
+}

@@ -1,0 +1,1 @@
+Events.OnGameBoot.Add(function() print("Named Literature: ver:NOV-08-2026") end)

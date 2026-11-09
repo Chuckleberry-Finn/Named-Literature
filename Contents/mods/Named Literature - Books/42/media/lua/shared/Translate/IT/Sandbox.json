@@ -1,0 +1,5 @@
+{
+    "Sandbox_NamedLiterature": "Named Literature",
+    "Sandbox_NamedLiteratureVanillaTitles": "Includi Titoli Vanilla",
+    "Sandbox_NamedLiteratureVanillaTitles_tooltip": "Se vero, i titoli vanilla possono comparire insieme ai titoli di Named Literature, in proporzione alla dimensione di ogni elenco. Se falso, vengono usati solo i titoli di Named Literature."
+}
